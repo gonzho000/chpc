@@ -12,7 +12,7 @@ There are 2 PCB designs: type "F" and type "G".
 Both untested.
 
 # Type "F" features:
-- **only SMD** componens,
+- **mostly SMD** componens,
 - **internal power** source,
 - **10** output channels,
 - 5 output channels,
