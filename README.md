@@ -9,7 +9,8 @@ Discussion: https://www.forumhouse.ru/threads/469103/
 ## PCB Design
 
 There are 2 PCB designs: type "F" and type "G".
-Both untested.
+
+Both designs state: beta, untested.
 
 ## Type "F" features:
 - **mostly SMD** componens,
