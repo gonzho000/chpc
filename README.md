@@ -1,3 +1,3 @@
 # chpc
-Update Description Later
-Dummy for a project
+Update Description Later.
+Dummy for a project.
