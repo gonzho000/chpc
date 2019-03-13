@@ -1,9 +1,10 @@
-## CHPC: Cheap Heat Pump Controller v1.0
+### CHPC: Cheap Heat Pump Controller v1.0
 
 # Development
 
 State: active
-Thread: https://www.forumhouse.ru/threads/469103/
+
+Discussion: https://www.forumhouse.ru/threads/469103/
 
 # PCB Design
 
