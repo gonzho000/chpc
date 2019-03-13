@@ -11,7 +11,7 @@ Discussion: https://www.forumhouse.ru/threads/469103/
 There are 2 PCB designs: type "F" and type "G".
 Both untested.
 
-# Type "F" features:
+## Type "F" features:
 - **mostly SMD** componens,
 - **internal power** source,
 - **10** output channels,
@@ -24,7 +24,7 @@ Both untested.
 - i2c devices: allowed, 
 - ds18b20 on one lane.
 
-# Type "G" features:
+## Type "G" features:
 - **no SMD** components,
 - **external, board-placed** power source,
 - 5 output channels,
