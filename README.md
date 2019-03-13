@@ -23,7 +23,7 @@ Both designs state: beta, untested.
 - EEV support,
 - 16 bit **i2c ADC: on board**,
 - i2c devices: allowed, 
-- ds18b20 on one lane.
+- T sensors: ds18b20 on one lane.
 
 ## Type "G" features:
 - **no SMD** components,
@@ -35,7 +35,7 @@ Both designs state: beta, untested.
 - EEV support,
 - 16 bit **i2c ADC: off board**,
 - i2c devices: allowed,
-- ds18b20 on one lane.
+- T sensors: ds18b20 on one lane.
 
 # Type "F" PCB
 ![Type F PCB](./PCB_Type_F.png)
