@@ -35,4 +35,4 @@ Type "G" features:
 - i2c devices: allowed,
 - ds18b20 on one lane.
 
-![Type F PCB] (./PCB_Type_F.png)
+![Type F PCB](./PCB_Type_F.png)
