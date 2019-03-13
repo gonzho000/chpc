@@ -36,4 +36,5 @@ Both untested.
 - i2c devices: allowed,
 - ds18b20 on one lane.
 
+# Type "F" PCB
 ![Type F PCB](./PCB_Type_F.png)
