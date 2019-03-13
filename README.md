@@ -1,17 +1,17 @@
 ### CHPC: Cheap Heat Pump Controller v1.0
 
-# Development
+## Development
 
 State: active
 
 Discussion: https://www.forumhouse.ru/threads/469103/
 
-# PCB Design
+## PCB Design
 
 There are 2 PCB designs: type "F" and type "G".
 Both untested.
 
-Type "F" features:
+# Type "F" features:
 - **only SMD** componens,
 - **internal power** source,
 - **10** output channels,
@@ -24,7 +24,7 @@ Type "F" features:
 - i2c devices: allowed, 
 - ds18b20 on one lane.
 
-Type "G" features:
+# Type "G" features:
 - **no SMD** components,
 - **external, board-placed** power source,
 - 5 output channels,
