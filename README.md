@@ -38,3 +38,6 @@ Both untested.
 
 # Type "F" PCB
 ![Type F PCB](./PCB_Type_F.png)
+
+# Type "G" PCB
+![Type G PCB](./PCB_Type_G.png)
