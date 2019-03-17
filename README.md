@@ -16,7 +16,6 @@ Both designs state: beta, untested.
 - **mostly SMD** componens,
 - **internal power** source,
 - **10** output channels,
-- 5 output channels,
 - 4 input channels,
 - 5 relays: 1 * 16A + 4 * 7A,
 - buzzer,
@@ -27,7 +26,7 @@ Both designs state: beta, untested.
 
 ## Type "G" features:
 - **no SMD** components,
-- **external, board-placed** power source,
+- **external or board-placed** power source,
 - **5** output channels,
 - 4 input channels,
 - 5 relays: 2 * 16A + 3 * 7A,
