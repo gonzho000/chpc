@@ -58,6 +58,7 @@ Sensors abbreviations:
 | ----- | -------------------- |
 | Tae | after evaporator |
 | Tbe | before evaporator |
+| Ttarget | target |
 | Tsump | sump |
 | Tci | cold in |
 | Tco | cold out |
@@ -66,7 +67,6 @@ Sensors abbreviations:
 | Tbc | before condenser |
 | Tac | after condenser |
 | Touter | outer (outdoor) |
-| Ttarget | target |
 | Ts1 | additional sensor1 |
 | Ts2 | additional sensor2 |
 
