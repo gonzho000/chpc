@@ -4,6 +4,10 @@
 
 State: active
 
+```diff
+- Stage: Purchase PCBs and components, development will be resumed at ~April-May 2019
+```
+
 Discussion: https://www.forumhouse.ru/threads/469103/
 
 ## PCB Design
