@@ -65,7 +65,7 @@ Sensors abbreviations:
 | Tho | hot out |
 | Tbc | before condenser |
 | Tac | after condenser |
-| Touter | outer |
+| Touter | outer (outdoor) |
 | Ttarget | target |
 | Ts1 | additional sensor1 |
 | Ts2 | additional sensor2 |
