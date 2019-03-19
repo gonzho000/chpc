@@ -67,7 +67,7 @@ Sensors abbreviations:
 | Tac | after condenser |
 | Touter | outer |
 | Ttarget | target |
-| Ts1 | sens_1 |
-| Ts2 | sens_2 |
+| Ts1 | additional sensor1 |
+| Ts2 | additional sensor2 |
 
 
