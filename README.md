@@ -54,19 +54,19 @@ Drafts below.
 
 Sensors abbreviations:
 Abbr. | Full name
------|--------------------
+----- | --------------------
 Tae | after evaporator
 Tbe | before evaporator
 Tsump | sump
-Tci |cold in
-Tco |cold out
-Thi |hot in
-Tho |hot out
-Tbc |before condenser
-Tac |after condenser
-Touter |outer
-Ttarget |target
-Ts1 |sens_1
-Ts2 |sens
+Tci | cold in
+Tco | cold out
+Thi | hot in
+Tho | hot out
+Tbc | before condenser
+Tac | after condenser
+Touter | outer
+Ttarget | target
+Ts1 | sens_1
+Ts2 | sens
 
 
