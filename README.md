@@ -53,6 +53,7 @@ Both designs state: beta, untested.
 Drafts below.
 
 Sensors abbreviations:
+
 | Abbr. | Full name |
 | ----- | -------------------- |
 | Tae | after evaporator |
