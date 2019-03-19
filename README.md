@@ -54,7 +54,7 @@ Drafts below.
 
 Sensors abbreviations:
 Abbr. | Full name
---------------------------
+-----|--------------------
 Tae | after evaporator
 Tbe | before evaporator
 Tsump | sump
