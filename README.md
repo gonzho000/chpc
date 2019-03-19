@@ -1,12 +1,13 @@
 ### CHPC: Cheap Heat Pump Controller v1.0
 
+```diff
+- NOW: purchasing components and PCBs, development will be resumed after arrival at ~April-May 2019 !
+```
+
+
 ## Development
 
 State: active
-
-```diff
-- Stage: Purchase PCBs and components, development will be resumed at ~April-May 2019
-```
 
 Discussion: https://www.forumhouse.ru/threads/469103/
 
