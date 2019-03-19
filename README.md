@@ -46,3 +46,26 @@ Both designs state: beta, untested.
 
 # Type "G" PCB
 ![Type G PCB](./PCB_Type_G.png)
+
+....
+
+....
+Drafts below.
+
+Sensors abbreviations:
++-----+-----------+
+| Tae | after evaporator |
+| Tbe | before evaporator |
+| Tsump | sump |
+| Tci |cold in |
+| Tco |cold out |
+| Thi |hot in |
+| Tho |hot out |
+| Tbc |before condenser |
+| Tac |after condenser |
+| Touter |outer |
+| Ttarget |target |
+| Ts1 |sens_1 |
+| Ts2 |sens |
++-----+-----+
+
