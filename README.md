@@ -1,7 +1,7 @@
 ### CHPC: Cheap Heat Pump Controller v1.0
 
 ```diff
-- NOW: purchasing components and PCBs, development will be resumed after arrival at ~April-May 2019 !
+- NOW: purchasing components and PCBs, development will be resumed after arrival at ~April 2019 !
 ```
 
 
