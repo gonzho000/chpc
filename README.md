@@ -110,9 +110,9 @@ This abbrevations used in interface during installation procedure
 | Button	|	momentary switch 6x6 2	|	2		
 | Display	|	1602 LCD with i2c interface	|	1		
 | -	|	buzzer	|	1	|	R9.0-2P-4.0PITCH	
-| Module	|	LM2596S module	|	0 or 1	|	XX-to-12 stab	|	Needed only if you will use 24v as power source
-| -	|	power source, 12v1.25A 70x30x40|		1	|	70x30x40	
-| -	|	ds18b20	|	6		|	 |	1 to 13, 6 recommended as fast start
-| -	|	usb→uart	|	1 | 	|			To upload firmware |
-| - |	current sensor sct-013-000	1		|	
-| -	|	rs485-USB	|	1 |	 |			To connect CHPC < - > PC/notebook |
+| Module	|	LM2596S module	|	0 or 1	|	XX-to-12 stab	|	Needed only if you will use 24v as power source |
+| -	|	power source, 12v1.25A 70x30x40|		1	|	70x30x40	 
+| IC	|	ds18b20	|	6		|	 |	1 to 13, 6 recommended as fast start |
+| Conv	|	usb→uart	|	1 | 	|			To upload firmware |
+| - |	current sensor sct-013-000	1		
+| Conv	|	rs485-USB	|	1 |	 |			To connect CHPC < - > PC/notebook |
