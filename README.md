@@ -41,6 +41,7 @@ Only 1 Relay: drives electric heater (any)
 ## Temperature sensors installation example (medium scheme)
 ![medium scheme](./HeatPump_t_sensors_med.png)
 
+
  ## Get your own CHPC:
 * download PCB gerber files
 * search google [where to order PCB](https://www.google.com/search?q=order+pcb) or make your own at CNC machine
@@ -76,6 +77,10 @@ This abbrevations used in interface during installation procedure
  ![proto2](./proto2.jpg)
  
  ![proto2 PCB](./proto2_PCB.jpg)
+ 
+Prototype 1.
+History ) But worked well for a season.
+ ![proto1](./proto1.jpg)
 
 ## BOM (Bill Of Materials):
 | Type |	Name |	Quantity |	Case |	Comment |
