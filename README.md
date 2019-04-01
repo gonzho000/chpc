@@ -1,11 +1,10 @@
 ### CHPC: Cheap Heat Pump Controller v1.0
 <b>The CHPC a minimal cost Heat Pump (HP) controller, which can be used as provided, or can be adopted to nearly all use cases due to open source nature.</b>
-
-
+<br><br>
 ## Development
 
 State: active
-
+<br><br>
 ## Applications:
 | Usage. |	Brief description. | 	Application examples	| Available protections	|
 | ---------- | ------------------ | ------------------ | -------------------- |
@@ -23,7 +22,7 @@ For more information about Heap Pumps look at [Wikipedia about HP](https://en.wi
  <b>Remote computer terminal over RS-485 line. </b> Target temperature and running conditions under remote control. User can get stats from all T sensors. Up to 1.2 kilometer line.\*<br>
  <b> Remote automated control/stats via RS-485.</b> Firmware was written with python scripting in mind (and real scripts at prototype 485 network).<br>
 \* RS-485 specification. Hardware test succeeded on 400 meters line.
-<br>
+<br><br>
 ### <b>Relays:</b>
 ## <b>"Thermostat"</b>:
 Only 1 Relay: drives electric heater (any) 
@@ -39,9 +38,7 @@ Only 1 Relay: drives electric heater (any)
 * Up to 13 temperature sensors can be connected to CHPC to control all processes that you want. 
 * Only 1 sensor needed for "Thermostat" or "Heat Pump capillary/TXV" 
 * 3 sensors needed for "HP with EEV" (absolute minimum scheme)
-<br>
-
-
+<br><br>
 ## PCB Design
 
 There are 2 PCB designs: type "F" and type "G".
