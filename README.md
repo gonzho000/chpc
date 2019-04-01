@@ -9,33 +9,9 @@ State: active
 ## Applications:
 | Usage. |	Brief description. | 	Application examples	| Available protections	|
 | ---------- | ------------------ | ------------------ | -------------------- |
-| 1. Thermostat.	|  Precision thermostat. <br> Simple and cheap.<br> Only 1 relay and 1 temperature sensor required.<br> | Room heat control.<br> Chicken coop climate control.<br> Distillation column or<br> Yogurt maker t. control.<br> | N/A	|
-	
-2. Heat pump (HP) control.	
-Controller drives HP system components: compressor, Cold and Hot side Circulating Pumps (CP). Protects system from overload, overheat and freezing up. Drives EEV* to optimize running conditions.
-	
-DIY heat pump system.
-Repair module for commercial system.
-Water heater, house heating systems and same.
-	
-Compressor: cold start or
-overheat. Discharge and suction lines protection.
-Short-term power loss.
-Anti-freeze. Power overload protection.
-
-
-
-## <b>Applications:</b>
-### <b>1. Thermostat.</b>
-_Brief_: <b>Precision thermostat.</b> Simple and cheap. Only 1 relay and 1 temperature sensor required. 
-_Application examples:_ Room heat control. Chicken coop climate control. Distillation column or Yogurt maker temperature control.
-
-### <b>2. Heat pump (HP) controller.</b>
-_Brief_: <b> Heat pump controler.</b> Controller drives HP system components: compressor, Cold and Hot side Circulating Pumps (CP). Protects system from overload, overheat and freezing up. Drives EEV\* to optimize HP running conditions.
-_Application examples:_ DIY heat pump system. Repair module for commercial system.
-Water heater, house heating systems and same.
-_Available protections_: Compressor: cold start or overheat. Discharge and suction lines protection. Short-term power loss. Anti-freeze. Power overload protection. Others.
-\* under development
+| 1. Thermostat.	|  Precision thermostat. Simple and cheap.<br> Only 1 relay and 1 temperature sensor required.<br> | Room heat control. Chicken coop climate control. Distillation column or Yogurt maker t. control. Else. | N/A	|
+| 2. Heat pump (HP) control. | Controller drives HP system components: compressor, Cold and Hot side Circulating Pumps (CP). Protects system from overload, overheat and freezing up. Drives EEV* to optimize running conditions. | DIY heat pump system. Repair module for commercial system. Water heater, house heating systems and same. | Compressor: cold start or overheat. Discharge and suction lines protection. Short-term power loss. Anti-freeze. Power overload protection. |
+* under development
 
 For more information about Heap Pumps look at [Wikipedia about HP](https://en.wikipedia.org/wiki/Heat_pump)
 <br>
