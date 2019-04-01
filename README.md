@@ -126,3 +126,5 @@ History ) But worked well for a season.
 | - |	current sensor sct-013-000  |	1		
 | Conv	|	rs485-USB	|	1 |	 |			To connect CHPC < - > PC/notebook |
 <br><br>
+## Author:
+gonzho АТ web.de (c) 2018-2019
