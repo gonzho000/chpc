@@ -119,5 +119,5 @@ History ) But worked well for a season.
 | -	|	power source, 12v1.25A 70x30x40|		1	|	70x30x40	 
 | IC	|	ds18b20	|	6		|	 |	1 to 13, 6 recommended as fast start |
 | Conv	|	usb→uart	|	1 | 	|			To upload firmware |
-| - |	current sensor sct-013-000	1		
+| - |	current sensor sct-013-000  |	1		
 | Conv	|	rs485-USB	|	1 |	 |			To connect CHPC < - > PC/notebook |
