@@ -52,6 +52,7 @@ Only 1 Relay: drives electric heater (any)
 
 ## T sensors abbreviations:
 This abbrevations used in interface during installation procedure
+
 | Abbr. | Full name |
 | ----- | -------------------- |
 | Tae | after evaporator |
