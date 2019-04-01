@@ -68,6 +68,7 @@ This abbrevations used in interface during installation procedure
 | Touter | outer (outdoor) |
 | Ts1 | additional sensor1 |
 | Ts2 | additional sensor2 |
+
 <br><br>
  ## Photos:
  This is prototype 2.
