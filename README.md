@@ -87,7 +87,7 @@ This abbrevations used in interface during installation procedure
 | R	|	10R ¼W	|	1		
 | Cap	|	0.1 uf	|	4		
 | Cap	|	22uf_16v	|	4		
-| IC	|	PC817C	|	2 or 4	|	DIP-4	2 if you use buttons instead of inputs
+| IC	|	PC817C	|	2 or 4	|   |		DIP-4	2 if you use buttons instead of inputs
 | Conn	|	DIP-16 bed	|	3	|	DIP-16	
 | IC	|	ULN2003APG	|	2	|	DIP-16	
 | IC	|	7805 TO-220	|	1	|	TO-220	
@@ -102,7 +102,7 @@ This abbrevations used in interface during installation procedure
 | Conn	|	KF128 2.54_screw_1x12	|	1		
 | Conn	|	KF128 3.81_screw_3P	|	5		
 | Conn	|	KF128 5.08_screw_2P	|	3		
-| Conn	|	2.54_legs_female_x2	|	1		|	like used at arduino mega
+| Conn	|	2.54_legs_female_x2	|	1		|	  |	like used at arduino mega
 | Conn	|	2.54_legs_female_x3	|	1		
 | Conn	|	2.54_legs_female_x4	|	2		
 | Conn	|	2.54_legs_female_x12	|	2		
@@ -112,7 +112,7 @@ This abbrevations used in interface during installation procedure
 | -	|	buzzer	|	1	|	R9.0-2P-4.0PITCH	
 | Module	|	LM2596S module	|	0 or 1	|	XX-to-12 stab	|	Needed only if you will use 24v as power source
 | -	|	power source, 12v1.25A 70x30x40|		1	|	70x30x40	
-| -	|	ds18b20	|	6		|	1 to 13, 6 recommended as fast start
+| -	|	ds18b20	|	6		|	 |	1 to 13, 6 recommended as fast start
 | usb→uart	|	1|	|			To upload firmware
 | - 	|	current sensor sct-013-000	1		|	
 | rs485-USB	|	1|	|			To connect CHPC < - > PC/notebook
