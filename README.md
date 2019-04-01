@@ -22,7 +22,7 @@ For more information about Heap Pumps look at [Wikipedia about HP](https://en.wi
  <b> Remote automated control/stats via RS-485.</b> Firmware was written with python scripting in mind (and real scripts at prototype 485 network).<br>
 \* RS-485 specification. Hardware test succeeded on 400 meters line.
 
-Example: day/night setpoint control and data visualisation with last (automated rs485) interface.
+Example: day/night setpoint control and data visualisation with "pythonic rs485" way.
 ![graph example](./t_graph_example.png)
 <br><br>
 
