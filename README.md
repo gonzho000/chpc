@@ -82,7 +82,7 @@ Prototype 1.
 History ) But worked well for a season.
  ![proto1](./proto1.jpg)
 
-## BOM (Bill Of Materials):
+## BOM (Bill Of Materials), PCB v1.1:
 | Type |	Name |	Quantity |	Case |	Comment |
 | ---- | ---- | ----- | ---- | ---- |
 | R	|	10k ¼W	|	2		
