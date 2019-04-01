@@ -69,4 +69,10 @@ This abbrevations used in interface during installation procedure
 | Ts1 | additional sensor1 |
 | Ts2 | additional sensor2 |
 
-
+ ## Photos:
+ This is prototype 2.
+ 1602 is the best choise.
+ 
+ ![proto2](./proto2.jpg)
+ 
+ ![proto2 PCB](./proto2_PCB.jpg)
