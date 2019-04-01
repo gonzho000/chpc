@@ -32,12 +32,14 @@ Only 1 Relay: drives electric heater (any)
 * Hot CP
 * Sump Heater (optional, recommended for outdoor HP installations)
 * 4-way Valve (support coming up: autumn 2019)
-
+<br><br>
 ## Temperature sensors:
 * Up to 13 temperature sensors can be connected to CHPC to control all processes that you want. 
 * Only 1 sensor needed for "Thermostat" or "Heat Pump capillary/TXV" 
 * 3 sensors needed for "HP with EEV" (absolute minimum scheme)
 <br><br>
+## Temperature sensors (medium scheme)
+![medium scheme](./HeatPump_t_sensors_med.png)
 
 ## PCB Design
 
