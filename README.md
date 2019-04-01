@@ -6,6 +6,25 @@
 
 State: active
 
+## Applications:
+| Usage. |	Brief description. | 	Application examples	| Available protections	|
+| ---------- | ------------------ | ------------------ | -------------------- |
+| 1. Thermostat.	|  Precision thermostat. <br> Simple and cheap.<br> Only 1 relay and 1 temperature sensor required.<br> | Room heat control.<br> Chicken coop climate control.<br> Distillation column or<br> Yogurt maker t. control.<br> | N/A	|
+	
+2. Heat pump (HP) control.	
+Controller drives HP system components: compressor, Cold and Hot side Circulating Pumps (CP). Protects system from overload, overheat and freezing up. Drives EEV* to optimize running conditions.
+	
+DIY heat pump system.
+Repair module for commercial system.
+Water heater, house heating systems and same.
+	
+Compressor: cold start or
+overheat. Discharge and suction lines protection.
+Short-term power loss.
+Anti-freeze. Power overload protection.
+
+
+
 ## <b>Applications:</b>
 ### <b>1. Thermostat.</b>
 _Brief_: <b>Precision thermostat.</b> Simple and cheap. Only 1 relay and 1 temperature sensor required. 
