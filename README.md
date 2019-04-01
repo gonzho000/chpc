@@ -11,6 +11,7 @@ State: active
 | ---------- | ------------------ | ------------------ | -------------------- |
 | 1. Thermostat.	|  Precision thermostat. Simple and cheap.<br> Only 1 relay and 1 temperature sensor required.<br> | Room heat control. Chicken coop climate control. Distillation column or Yogurt maker t. control. Else. | N/A	|
 | 2. Heat pump (HP) control. | Controller drives HP system components: compressor, Cold and Hot side Circulating Pumps (CP). Protects system from overload, overheat and freezing up. Drives EEV\* to optimize running conditions. | DIY heat pump system. Repair module for commercial system. Water heater, house heating systems and same. | Compressor: cold start or overheat. Discharge and suction lines protection. Short-term power loss. Anti-freeze. Power overload protection. |
+
 \* under development
 
 For more information about Heap Pumps look at [Wikipedia about HP](https://en.wikipedia.org/wiki/Heat_pump)
@@ -24,9 +25,9 @@ For more information about Heap Pumps look at [Wikipedia about HP](https://en.wi
 \* RS-485 specification. Hardware test succeeded on 400 meters line.
 <br>
 ### <b>Relays:</b>
-### <b>"Thermostat"</b>:
+## <b>"Thermostat"</b>:
 Only 1 Relay: drives electric heater (any) 
-### <b>Heat Pump.</b> Capillary tube, TXV, EEV:
+## <b>Heat Pump.</b> Capillary tube, TXV, EEV:
 5 Relays, drives all you need:
 * Compressor (can be used as external relay driver for High Power systems)
 * Cold Circulating Pump (CP)
