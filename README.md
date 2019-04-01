@@ -24,9 +24,9 @@ For more information about Heap Pumps look at [Wikipedia about HP](https://en.wi
 \* RS-485 specification. Hardware test succeeded on 400 meters line.
 <br><br>
 ### <b>Relays:</b>
-## <b>"Thermostat"</b>:
+## "Thermostat":
 Only 1 Relay: drives electric heater (any) 
-## <b>Heat Pump.</b> Capillary tube, TXV, EEV:
+## "Heat Pump". Capillary tube, TXV, EEV:
 5 Relays, drives all you need:
 * Compressor (can be used as external relay driver for High Power systems)
 * Cold Circulating Pump (CP)
@@ -39,6 +39,7 @@ Only 1 Relay: drives electric heater (any)
 * Only 1 sensor needed for "Thermostat" or "Heat Pump capillary/TXV" 
 * 3 sensors needed for "HP with EEV" (absolute minimum scheme)
 <br><br>
+
 ## PCB Design
 
 There are 2 PCB designs: type "F" and type "G".
