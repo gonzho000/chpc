@@ -9,8 +9,6 @@
 
 State: active
 
-Discussion: https://www.forumhouse.ru/threads/469103/
-
 ## PCB Design
 
 There are 2 PCB designs: type "F" and type "G".
