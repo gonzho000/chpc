@@ -113,6 +113,6 @@ This abbrevations used in interface during installation procedure
 | Module	|	LM2596S module	|	0 or 1	|	XX-to-12 stab	|	Needed only if you will use 24v as power source
 | -	|	power source, 12v1.25A 70x30x40|		1	|	70x30x40	
 | -	|	ds18b20	|	6		|	 |	1 to 13, 6 recommended as fast start
-| usb→uart	|	1|	|			To upload firmware
+| usb→uart	|	1 | 	|			To upload firmware |
 | - 	|	current sensor sct-013-000	1		|	
-| rs485-USB	|	1|	|			To connect CHPC < - > PC/notebook
+| rs485-USB	|	1 |	 |			To connect CHPC < - > PC/notebook |
