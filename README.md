@@ -20,7 +20,7 @@ For more information about Heap Pumps look at [Wikipedia about HP](https://en.wi
  <b>0.96 OLED or 1602 LCD screen + buttons:</b> Simple, local screen controlled system. Remote control is not possible.<br>
  <b>Remote computer terminal over RS-485 line. </b> Target temperature and running conditions under remote control. User can get stats from all T sensors. Up to 1.2 kilometer line.\*<br>
  <b> Remote automated control/stats via RS-485.</b> Firmware was written with python scripting in mind (and real scripts at prototype 485 network).<br>
- <b> Both screen+buttons and RS-485.</b>
+ <b> Both screen + buttons and RS-485.</b>
  
 \* RS-485 specification. Hardware test succeeded on 400 meters line.
 
