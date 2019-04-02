@@ -1,5 +1,5 @@
 ### CHPC: Cheap Heat Pump Controller v1.0
-<b>The CHPC a minimal cost Heat Pump (HP) controller, which can be used as provided, or can be adopted to nearly all use cases due to open source nature.</b>
+<b>CHPC is a minimal cost Heat Pump (HP) controller, which can be used as provided, or can be adopted to nearly all use cases due to open source nature.</b>
 <br><br>
 ## Development
 
