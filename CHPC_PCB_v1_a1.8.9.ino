@@ -281,11 +281,7 @@ String fw_version = "1.0";
 #define speakerOut            6
 #define em_pin1               A6
 #define EMERGENCY_PIN         A7
-#ifdef EEV_SUPPORT
-	#define EEV_1		2
-	#define EEV_2		4
-	#define EEV_3		3
-	#define EEV_4		5
+
 
 
 #ifdef BOARD_TYPE_G
@@ -299,19 +295,29 @@ String fw_version = "1.0";
 		#define BUT_RIGHT 	A3
 		#define BUT_LEFT  	A2
 	#endif
-
+	#ifdef EEV_SUPPORT
+		#define EEV_1		2
+		#define EEV_2		4
+		#define EEV_3		3
+		#define EEV_4		5
 	#endif
 #endif
 #ifdef BOARD_TYPE_F
 	String hw_version = "Type F v1.x";
 	#define RELAY_HEATPUMP        	7
 	#define RELAY_COLDSIDE_CIRCLE  	8
-	//incorrect below!
+	//incorrect below, see ralays on register
 	#define RELAY_HOTSIDE_CIRCLE  	10
 	#define RELAY_SUMP_HEATER     	11
 	#define RELAY_4WAY_VALVE      	9
 	//latchPin = 10;	clockPin = 11;	dataPin = 9; 
 	//595.0: relay 1, 595.1: relay 2, 595.2: relay 3, 595.3: uln 6, 595.4: uln 7, 595.5: uln 8, 595.6: uln 9, 595.7: uln 10 
+	#ifdef EEV_SUPPORT
+		#define EEV_1		5
+		#define EEV_2		3
+		#define EEV_3		4
+		#define EEV_4		2
+	#endif
 	
 #endif
 //---------------------------memory debug
@@ -1417,8 +1423,8 @@ void loop(void) {
 						EEV_fast = 1;
 					}
 				} else if (errorcode == 0 && async_wattage > c_workingOK_wattage_min) {
-					PrintS_and_D("EEV: driving");//!!!
 					T_EEV_overheating = Tae.T - Tbe.T;
+					PrintS_and_D("EEV: driving" + String(T_EEV_overheating));//!!!
 					if (EEV_cur_pos <= 0){
 						PrintS_and_D("EEV: full close protection");	
 						if (EEV_OPEN_AFTER_CLOSE != 0) {				//full close protection
@@ -1428,29 +1434,29 @@ void loop(void) {
 						EEV_adonotcare = 0;
 					} else if (EEV_cur_pos > 0) {
 						if (T_EEV_overheating  < (T_EEV_setpoint - EEV_EMERG_DIFF) ) {				//emerg!
-							PrintS_and_D("EEV: emergdiff!");//!!!
+							PrintS_and_D("EEV: emergency closing!");//!!!
 							EEV_apulses = -EEV_EMERG_STEPS;
 							EEV_adonotcare = 0;
 							EEV_fast = 1;
 						} else if (T_EEV_overheating  < T_EEV_setpoint) {					//too
-							PrintS_and_D("EEV: vapwarn");//!!!
+							PrintS_and_D("EEV: closing");//!!!
 							//EEV_apulses = -EEV_NONPRECISE_STEPS;
 							EEV_apulses = -1;
 							EEV_adonotcare = 0;
 							EEV_fast = 0;
 						} else if (T_EEV_overheating  > T_EEV_setpoint + EEV_HYSTERESIS + EEV_PRECISE_START) {	//very
-							PrintS_and_D("EEV: fasto");//!!!
+							PrintS_and_D("EEV: fast opening");//!!!
 							//EEV_apulses =  +EEV_NONPRECISE_STEPS;
 							EEV_apulses =  +1;
 							EEV_adonotcare = 0;
 							EEV_fast = 1;
 						} else if (T_EEV_overheating > T_EEV_setpoint + EEV_HYSTERESIS) {			//too
-							PrintS_and_D("EEV: normo");//!!!
+							PrintS_and_D("EEV: opening");//!!!
 							EEV_apulses =  +1;
 							EEV_adonotcare = 0;
 							EEV_fast = 0;
 						} else if (T_EEV_overheating  > T_EEV_setpoint) {					//ok
-							PrintS_and_D("EEV: OKo");//!!!
+							PrintS_and_D("EEV: OK");//!!!
 							//
 						}
 					}
