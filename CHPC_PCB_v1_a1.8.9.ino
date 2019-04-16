@@ -21,18 +21,18 @@
 
 
 //-----------------------USER OPTIONS-----------------------
-//#define BOARD_TYPE_G 		//Type "G"
-#define BOARD_TYPE_F		//Type "F"
+//#define BOARD_TYPE_G 				//Type "G"
+#define BOARD_TYPE_F				//Type "F"
 
 //#define DISPLAY_096 		1
-//#define DISPLAY_1602 		2 		// patch "inline size_t LiquidCrystal_I2C::write(uint8_t value)" if only 1st character appears: "return 1" instead of "return 0"
+#define DISPLAY_1602 		2 		// patch "inline size_t LiquidCrystal_I2C::write(uint8_t value)" if only 1st character appears: "return 1" instead of "return 0"
 //#define DISPLAY_NONE		-1
 
 //#define INPUTS_AS_BUTTONS	1  		//pulldown resistors required!
 //#define RS485_PYTHON		1  	
 #define RS485_HUMAN   		2
 #define EEV_SUPPORT
-#define	EEV_ONLY				//NO target, no relays. Oly EEV, Tae, Tbe, current sensor and may be additional T sensors
+//#define	EEV_ONLY				//NO target, no relays. Oly EEV, Tae, Tbe, current sensor and may be additional T sensors
 
 #define HUMAN_AUTOINFO	10000			//print stats to console
 
@@ -71,11 +71,8 @@
 #define MAGIC     		0x39   		//change if u want to reinit T sensors
 //-----------------------USER OPTIONS END -----------------------
 
-//#define EEV_SUPPORT
-//#define INPUTS_AS_INPUTS	2  		//!!!
-//define RS485_MACHINE 		3 		//?? or part of Python?
-
-
+//#define INPUTS_AS_INPUTS	2  		//
+//#define RS485_MACHINE 	3 		//?? or part of Python?
 
 //-----------------------changelog-----------------------
 /*
@@ -102,14 +99,15 @@ v1.1, 15 Apr 2019:
 - EEV_ONLY mode
 - EEV_Support
 - EEV auto poweron/poweroff every 10 sec
+- EEV_recalibration_time to stop HP and recalibrate EEV from zero level ex: every 24 hours
 
 v1.2, 16 Apr 2019:
-- minor "Type F" support
+- "Type F" support
 
 //TODO:
+- EEV define maximum working position
 - EEV to EEPROM
 - few devices at same lane for RS485_HUMAN
-- EEV_recalibration_time to stop HP and recalibrate EEV from zero level ex: every 24 hours
 - valve_4way
 - rewite re-init proc from MAGIC to emergency jumper removal at board start
 - emergency jumper support
@@ -227,7 +225,7 @@ wattage1
 
 */
 
-String fw_version = "1.0";
+String fw_version = "1.2";
 
 #ifdef DISPLAY_096
 	#define DISPLAY DISPLAY_096
@@ -306,12 +304,10 @@ String fw_version = "1.0";
 	String hw_version = "Type F v1.x";
 	#define RELAY_HEATPUMP        	7
 	#define RELAY_COLDSIDE_CIRCLE  	8
-	//incorrect below, see ralays on register
-	#define RELAY_HOTSIDE_CIRCLE  	10
-	#define RELAY_SUMP_HEATER     	11
-	#define RELAY_4WAY_VALVE      	9
-	//latchPin = 10;	clockPin = 11;	dataPin = 9; 
-	//595.0: relay 1, 595.1: relay 2, 595.2: relay 3, 595.3: uln 6, 595.4: uln 7, 595.5: uln 8, 595.6: uln 9, 595.7: uln 10 
+	#define LATCH_595 		10
+	#define CLK_595 		11
+	#define DATA_595 		9
+	//595.0: relay 3 RELAY_HOTSIDE_CIRCLE, 595.1: relay 4 RELAY_SUMP_HEATER, 595.2: relay 5 RELAY_4WAY_VALVE, 595.3: uln 6, 595.4: uln 7, 595.5: uln 8, 595.6: uln 9, 595.7: uln 10 
 	#ifdef EEV_SUPPORT
 		#define EEV_1		5
 		#define EEV_2		3
@@ -915,26 +911,94 @@ void off_EEV(){	//1 = do not take care of position
 
 #endif
 
+void halifise(void){
+	#ifdef BOARD_TYPE_F
+		/*#define LATCH_595 = 10;
+		#define CLK_595 = 11;
+		#DEFINE DATA_595 = 9;
+		//595.0: relay 3 RELAY_HOTSIDE_CIRCLE, 595.1: relay 4 RELAY_SUMP_HEATER, 595.2: relay 5 RELAY_4WAY_VALVE, 595.3: uln 6, 595.4: uln 7, 595.5: uln 8, 595.6: uln 9, 595.7: uln 10 
+		*/
+		digitalWrite(LATCH_595, 0);
+		//7
+		digitalWrite(CLK_595, 0);
+		digitalWrite(DATA_595, 0);
+		digitalWrite(CLK_595, 1);
+		__asm__ __volatile__ ("nop\n\t");
+		//6
+		digitalWrite(CLK_595, 0);
+		digitalWrite(DATA_595, 0);
+		digitalWrite(CLK_595, 1);
+		__asm__ __volatile__ ("nop\n\t");
+		//5
+		digitalWrite(CLK_595, 0);
+		digitalWrite(DATA_595, 0);
+		digitalWrite(CLK_595, 1);
+		__asm__ __volatile__ ("nop\n\t");
+		//4
+		digitalWrite(CLK_595, 0);
+		digitalWrite(DATA_595, 0);
+		digitalWrite(CLK_595, 1);
+		__asm__ __volatile__ ("nop\n\t");
+		//3
+		digitalWrite(CLK_595, 0);
+		digitalWrite(DATA_595, 0);	
+		digitalWrite(CLK_595, 1);
+		__asm__ __volatile__ ("nop\n\t");
+		//2
+		digitalWrite(CLK_595, 0);
+		digitalWrite(DATA_595, 0); //4way valve here
+		digitalWrite(CLK_595, 1);
+		__asm__ __volatile__ ("nop\n\t");
+		//1
+		digitalWrite(CLK_595, 0);
+		digitalWrite(DATA_595, sump_heater_state);
+		digitalWrite(CLK_595, 1);
+		__asm__ __volatile__ ("nop\n\t");
+		//0
+		digitalWrite(CLK_595, 0);
+		digitalWrite(DATA_595, hotside_circle_state);
+		digitalWrite(CLK_595, 1);
+		__asm__ __volatile__ ("nop\n\t");
+		digitalWrite(CLK_595, 0);
+		//
+		digitalWrite(LATCH_595, 1);
+		
+		
+	#endif
+	#ifdef BOARD_TYPE_G
+		digitalWrite	(RELAY_SUMP_HEATER, sump_heater_state);
+		digitalWrite	(RELAY_HOTSIDE_CIRCLE,	hotside_circle_state);
+	#endif
+}
+
+
 //--------------------------- functions END
 
 void setup(void) {
-	pinMode	(RELAY_HEATPUMP, 	OUTPUT);
-	pinMode	(RELAY_HOTSIDE_CIRCLE, 	OUTPUT);
-	pinMode	(RELAY_COLDSIDE_CIRCLE, OUTPUT);
-	pinMode	(RELAY_SUMP_HEATER, 	OUTPUT);
-	
+	pinMode		(RELAY_HEATPUMP, 	OUTPUT);
+	pinMode		(RELAY_COLDSIDE_CIRCLE, OUTPUT);
 	digitalWrite	(RELAY_HEATPUMP,	LOW);
-	digitalWrite	(RELAY_HOTSIDE_CIRCLE,	LOW);
 	digitalWrite	(RELAY_COLDSIDE_CIRCLE,	LOW);
-	digitalWrite	(RELAY_SUMP_HEATER,	LOW);
+	
+	#ifdef BOARD_TYPE_G
+		pinMode		(RELAY_SUMP_HEATER, 	OUTPUT);
+		pinMode		(RELAY_HOTSIDE_CIRCLE, 	OUTPUT);
+		digitalWrite	(RELAY_SUMP_HEATER,	LOW);
+		digitalWrite	(RELAY_HOTSIDE_CIRCLE,	LOW);
+	#endif
+	#ifdef BOARD_TYPE_F
+		pinMode		(LATCH_595, 	OUTPUT);
+		pinMode		(CLK_595, 	OUTPUT);
+		pinMode		(DATA_595, 	OUTPUT);
+		digitalWrite	(LATCH_595, 	LOW);
+		digitalWrite	(CLK_595, 	LOW);
+		digitalWrite	(DATA_595, 	LOW);
+	#endif
 	
 	#ifdef WATCHDOG
 		wdt_disable();
 		delay(2000);
-		wdt_enable (WDTO_8S);
 	#endif
-	
-
 	
 	InitS_and_D();
 	pinMode(SerialTxControl, OUTPUT);    
@@ -1142,6 +1206,10 @@ void setup(void) {
 	PrintAddr(Touter.addr);
 	PrintAddr(Ts1.addr);
 	PrintAddr(Ts2.addr);*/
+
+	#ifdef WATCHDOG
+		wdt_enable (WDTO_8S);
+	#endif
 	
 	Get_Temperatures();
 	
@@ -1424,7 +1492,7 @@ void loop(void) {
 					}
 				} else if (errorcode == 0 && async_wattage > c_workingOK_wattage_min) {
 					T_EEV_overheating = Tae.T - Tbe.T;
-					PrintS_and_D("EEV: driving" + String(T_EEV_overheating));//!!!
+					PrintS_and_D("EEV: driving " + String(T_EEV_overheating));//!!!
 					if (EEV_cur_pos <= 0){
 						PrintS_and_D("EEV: full close protection");	
 						if (EEV_OPEN_AFTER_CLOSE != 0) {				//full close protection
@@ -1484,7 +1552,7 @@ void loop(void) {
 				} else if (Tsump.T == -127) {
 					sump_heater_state = 0;
 				}
-				digitalWrite(RELAY_SUMP_HEATER, sump_heater_state);
+				halifise();
 			}
 	
 	
@@ -1639,9 +1707,8 @@ void loop(void) {
 			
 			//write states to relays
 			digitalWrite	(RELAY_HEATPUMP, 	heatpump_state);
-			digitalWrite	(RELAY_HOTSIDE_CIRCLE,	hotside_circle_state);
 			digitalWrite	(RELAY_COLDSIDE_CIRCLE,	coldside_circle_state);
-			digitalWrite	(RELAY_SUMP_HEATER,	sump_heater_state);
+			halifise();
 		#endif
 	}
 	
