@@ -21,16 +21,16 @@
 
 
 //-----------------------USER OPTIONS-----------------------
-#define BOARD_TYPE_G 		//Type "G"
-//#define BOARD_TYPE_F		//Type "F"
+//#define BOARD_TYPE_G 		//Type "G"
+#define BOARD_TYPE_F		//Type "F"
 
 //#define DISPLAY_096 		1
 //#define DISPLAY_1602 		2 		// patch "inline size_t LiquidCrystal_I2C::write(uint8_t value)" if only 1st character appears: "return 1" instead of "return 0"
 //#define DISPLAY_NONE		-1
 
-#define INPUTS_AS_BUTTONS	1  		//pulldown resistors required!
-#define RS485_PYTHON		1  	
-//#define RS485_HUMAN   		2
+//#define INPUTS_AS_BUTTONS	1  		//pulldown resistors required!
+//#define RS485_PYTHON		1  	
+#define RS485_HUMAN   		2
 #define EEV_SUPPORT
 #define	EEV_ONLY				//NO target, no relays. Oly EEV, Tae, Tbe, current sensor and may be additional T sensors
 
@@ -102,6 +102,9 @@ v1.1, 15 Apr 2019:
 - EEV_ONLY mode
 - EEV_Support
 - EEV auto poweron/poweroff every 10 sec
+
+v1.2, 16 Apr 2019:
+- minor "Type F" support
 
 //TODO:
 - EEV to EEPROM
@@ -278,6 +281,12 @@ String fw_version = "1.0";
 #define speakerOut            6
 #define em_pin1               A6
 #define EMERGENCY_PIN         A7
+#ifdef EEV_SUPPORT
+	#define EEV_1		2
+	#define EEV_2		4
+	#define EEV_3		3
+	#define EEV_4		5
+
 
 #ifdef BOARD_TYPE_G
 	String hw_version = "Type G v1.x";
@@ -290,14 +299,20 @@ String fw_version = "1.0";
 		#define BUT_RIGHT 	A3
 		#define BUT_LEFT  	A2
 	#endif
-	#ifdef EEV_SUPPORT
-		#define EEV_1		2
-		#define EEV_2		4
-		#define EEV_3		3
-		#define EEV_4		5
+
 	#endif
-#elif BOARD_TYPE_F
-	//int latchPin = 10;	int clockPin = 11;	int dataPin = 9; 
+#endif
+#ifdef BOARD_TYPE_F
+	String hw_version = "Type F v1.x";
+	#define RELAY_HEATPUMP        	7
+	#define RELAY_COLDSIDE_CIRCLE  	8
+	//incorrect below!
+	#define RELAY_HOTSIDE_CIRCLE  	10
+	#define RELAY_SUMP_HEATER     	11
+	#define RELAY_4WAY_VALVE      	9
+	//latchPin = 10;	clockPin = 11;	dataPin = 9; 
+	//595.0: relay 1, 595.1: relay 2, 595.2: relay 3, 595.3: uln 6, 595.4: uln 7, 595.5: uln 8, 595.6: uln 9, 595.7: uln 10 
+	
 #endif
 //---------------------------memory debug
 #ifdef __arm__
