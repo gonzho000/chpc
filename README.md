@@ -4,7 +4,6 @@
 
 ## Real life installation.
 Works from ground heat collectors (loops) to radiant in-floor heating system.
-Installed in a storeroom, display just for illustration.
 
  ![Installation example](./CHPC_i1.jpg)
 
