@@ -97,6 +97,10 @@ This abbrevations used in interface during installation procedure
 
 <br><br>
  ## Photos:
+ 
+ ![proto3](./proto3.jpg)
+ ![proto3 without screen](./proto3_noscreen.jpg)
+ 
  This is prototype 2.
  1602 is the best choise.
  
