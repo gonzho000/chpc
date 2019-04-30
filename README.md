@@ -1,9 +1,29 @@
 ### CHPC: Cheap Heat Pump Controller v1.0
 <b>The CHPC a minimal cost Heat Pump (HP) controller, which can be used as provided, or can be adopted to nearly all use cases due to open source nature.</b>
 <br><br>
-## Development
 
-State: active
+## Real life installation.
+Works from ground heat collectors (loops) to radiant in-floor heating system.
+
+ ![Installation example](./CHPC_i1.jpg)
+
+Driving:
+- EEV, 
+- Heat Pump Compressor,
+- Circulating Pumps,
+- Sump Heater.
+
+Temperature sensors installed:
+- Before/After Evaporator,
+- Cold In/Cold Out,
+- Hot In(used as Target)/Hot Out,
+- Outdoor temperature,
+- Sump.
+
+Controled via both RS-485 and 16x2 display with buttons.
+
+
+
 <br><br>
 ## Applications:
 | Usage. |	Brief description. | 	Application examples	| Available protections	|
