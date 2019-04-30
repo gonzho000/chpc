@@ -29,9 +29,8 @@ Controled via both RS-485 and 16x2 display with buttons.
 | Usage. |	Brief description. | 	Application examples	| Available protections	|
 | ---------- | ------------------ | ------------------ | -------------------- |
 | 1. Thermostat.	|  Precision thermostat. Simple and cheap. Only 1 relay and 1 temperature sensor required.<br> | Room heat control. Chicken coop climate control. Distillation column or Yogurt maker t. control. Else. | N/A	|
-| 2. Heat pump (HP) control. | Controller drives HP system components: compressor, Cold and Hot side Circulating Pumps (CP). Protects system from overload, overheat and freezing up. Drives EEV\* to optimize running conditions. | DIY heat pump system. Repair module for commercial system. Water heater, house heating systems and same. | Compressor: cold start or overheat. Discharge and suction lines protection. Short-term power loss. Anti-freeze. Power overload protection. |
+| 2. Heat pump (HP) control. | Controller drives HP system components: compressor, Cold and Hot side Circulating Pumps (CP). Protects system from overload, overheat and freezing up. Drives EEV to optimize running conditions. | DIY heat pump system. Repair module for commercial system. Water heater, house heating systems and same. | Compressor: cold start or overheat. Discharge and suction lines protection. Short-term power loss. Anti-freeze. Power overload protection. |
 
-\* under development
 
 For more information about Heap Pumps look at [Wikipedia about HP](https://en.wikipedia.org/wiki/Heat_pump)
 <br><br>
@@ -77,7 +76,7 @@ Only 1 Relay: drives electric heater (any)
 * enjoy
 <br><br>
 ## T sensors abbreviations:
-This abbrevations used in interface during installation procedure
+This abbrevations used in interface during sensors installation procedure
 
 | Abbr. | Full name |
 | ----- | -------------------- |
