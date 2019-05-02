@@ -9,7 +9,7 @@ Works from ground heat collectors (loops) to radiant in-floor heating system.
 
 Driving:
 - EEV, 
-- Heat Pump Compressor,
+- Heat Pump Compressor (1kW electrical power),
 - Circulating Pumps,
 - Sump Heater.
 
