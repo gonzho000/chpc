@@ -21,54 +21,57 @@
 
 
 //-----------------------USER OPTIONS-----------------------
-//#define BOARD_TYPE_G 				//Type "G"
-#define BOARD_TYPE_F				//Type "F"
+#define BOARD_TYPE_G 				//Type "G"
+//#define BOARD_TYPE_F				//Type "F"
 
-//#define DISPLAY_096 		1
-#define DISPLAY_1602 		2 		// patch "inline size_t LiquidCrystal_I2C::write(uint8_t value)" if only 1st character appears: "return 1" instead of "return 0"
+//#define DISPLAY_096 		1		//1st tests, support WILL BE DROPPED OUT SOON! small OLEDs support
+#define DISPLAY_1602 		2 		//if only 1st character appears: patch 1602 library "inline size_t LiquidCrystal_I2C::write(uint8_t value)"  "return 1" instead of "return 0"
 //#define DISPLAY_NONE		-1
 
-//#define INPUTS_AS_BUTTONS	1  		//pulldown resistors required!
-//#define RS485_PYTHON		1  	
-#define RS485_HUMAN   		2
+#define INPUTS_AS_BUTTONS	1  		//pulldown resistors required!
+
+#define RS485_PYTHON		1  	
+//#define RS485_HUMAN   	2
+//#define RS485_NONE		3
+
 #define EEV_SUPPORT
 //#define	EEV_ONLY				//NO target, no relays. Oly EEV, Tae, Tbe, current sensor and may be additional T sensors
 
 #define HUMAN_AUTOINFO	10000			//print stats to console
 
-//#define WATCHDOG          			//only if u know what to do
+#define WATCHDOG          			//only if u know what to do
 //-----------------------TUNING OPTIONS -----------------------
 #define MAX_WATTS		1170.0		//user for power protection
 
-#define DEFFERED_STOP_HOTCIRCLE	3000000		//5 mins
+#define DEFFERED_STOP_HOTCIRCLE	3000000		//50 mins
 
 #define POWERON_PAUSE     	300000    	//5 mins
 #define MINCYCLE_POWEROFF 	300000    	//5 mins
 #define MINCYCLE_POWERON  	3600000  	//60 mins
+#define POWERON_HIGHTIME	10000		//10 sec, defines time after start when power consumption can be 2 times greater than normal
 
 //EEV
 #define EEV_MAXPULSES		480
 
 #define EEV_PULSE_FCLOSE_MILLIS	20		//fast close, set waiting pos., close on danger
-#define EEV_PULSE_CLOSE_MILLIS	20000		//precise close
+#define EEV_PULSE_CLOSE_MILLIS	50000		//precise close
 #define EEV_PULSE_WOPEN_MILLIS	20		//waiting pos. set
-#define EEV_PULSE_FOPEN_MILLIS	2000		//fast open, fast search 
-#define EEV_PULSE_OPEN_MILLIS	55000		//precise open
+#define EEV_PULSE_FOPEN_MILLIS	1300		//fast open, fast search 
+#define EEV_PULSE_OPEN_MILLIS	60000		//precise open
 
 #define EEV_STOP_HOLD		500		//0.1..1sec for Sanhua
 #define EEV_CLOSE_ADD_PULSES	8		//read below, close algo
-#define EEV_OPEN_AFTER_CLOSE	40		//0 - close to zero position, than close on EEV_CLOSE_ADD_PULSES
-						//N - close to zero position, than close on EEV_CLOSE_ADD_PULSES, than open on N pulses
-#define EEV_MINWORKPOS		45		//position will be not less during normal work
-//#define EEV_NONPRECISE_STEPS	3		//pulses per fast step
-#define EEV_PRECISE_START	8.5		//T difference, threshold: make slower pulses if less
-#define EEV_EMERG_DIFF		3.5		//see below
-#define EEV_EMERG_STEPS		3		//pulses per emergency close step, if dangerous condition: diff =< (desired_overheat - EEV_EMERG_DIFF) occured
-#define EEV_HYSTERESIS		0.6		//must be less than EEV_PRECISE_START, ex: overheating = 4.0, hysteresis = 0.1, if overheating in range 4.0..4.1 no EEV pulses will be done; 
-#define EEV_CLOSEEVERY		86400000	//86400000: every 24 hours, when HP is NOT working
-#define EEV_OVERHEATING		4.0
+#define EEV_OPEN_AFTER_CLOSE	47		//0 - close to zero position, than close on EEV_CLOSE_ADD_PULSES
+						//N - close to zero position, than close on EEV_CLOSE_ADD_PULSES, than open on EEV_OPEN_AFTER_CLOSE pulses
+#define EEV_MINWORKPOS		52		//position will be not less during normal work
+#define EEV_PRECISE_START	8.6		//T difference, threshold: make slower pulses if less
+#define EEV_EMERG_DIFF		2.5		//if dangerous condition: diff =< (target_diff - EEV_EMERG_DIFF) occured, ex: target diff 5.0, emerg. diff 2.0, if calculated nowtime diff <= 3.0 then EEV will be closed
+#define EEV_HYSTERESIS		0.6		//must be less than EEV_PRECISE_START, ex: target difference = 4.0, hysteresis = 0.1, when difference in range 4.0..4.1 no EEV pulses will be done; 
+#define EEV_CLOSEEVERY		86400000	//86400000: every 24 hours, done while HP is NOT working
+#define EEV_TARGET_TEMP_DIFF	4.0		//target difference between Before Evaporator and After Evaporator
+//#define EEV_DEBUG				//used to debug during fine tuning
 
-#define MAGIC     		0x39   		//change if u want to reinit T sensors
+#define MAGIC     		0x46   		//change if u want to reinit T sensors
 //-----------------------USER OPTIONS END -----------------------
 
 //#define INPUTS_AS_INPUTS	2  		//
@@ -104,16 +107,21 @@ v1.1, 15 Apr 2019:
 v1.2, 16 Apr 2019:
 - "Type F" support
 
+v1.3, 30 Apr 2019:
+- EEV changed "overheating" to "delta T"
+- EEV algo v1.1
+
 //TODO:
-- EEV define maximum working position
-- EEV to EEPROM
-- few devices at same lane for RS485_HUMAN
+- liquid ref. protection: start cold circle and sump heater if tsump =< tco/tci+1
+- periodical start of hot side circle
 - valve_4way
-- rewite re-init proc from MAGIC to emergency jumper removal at board start
 - emergency jumper support
-? Liquid ref. T protection
-? current sensor optional
-? periodical start of hot side circle
+- inputs support
+- ? rewite re-init proc from MAGIC to emergency jumper removal at board start
+- ? few devices at same lane for RS485_HUMAN
+- ? EEV target to EEPROM
+- ? list T and other things on screen with buttons
+- ? EEV define maximum working position
 */
 //-----------------------changelog END-----------------------
 
@@ -225,7 +233,7 @@ wattage1
 
 */
 
-String fw_version = "1.2";
+String fw_version = "1.3";
 
 #ifdef DISPLAY_096
 	#define DISPLAY DISPLAY_096
@@ -273,6 +281,10 @@ String fw_version = "1.2";
 	char ishuman = 1;
 #endif
 
+#ifdef RS485_NONE
+	char ishuman = 0;
+#endif
+
 //hardware resources
 #define OW_BUS_ALLTSENSORS    12
 #define SerialTxControl       13   //RS485 Direction control DE and RE to this pin
@@ -314,6 +326,10 @@ String fw_version = "1.2";
 		#define EEV_3		4
 		#define EEV_4		2
 	#endif
+	#ifdef INPUTS_AS_BUTTONS		//not sure
+		#define BUT_RIGHT 	A3
+		#define BUT_LEFT  	A2
+	#endif
 	
 #endif
 //---------------------------memory debug
@@ -354,7 +370,7 @@ union _crc {
 #define RS485Transmit    HIGH
 #define RS485Receive     LOW
 
-const char devID  = 0x44;
+const char devID  = 0x41;
 const char hostID = 0x30;
 
 SoftwareSerial RS485Serial(SerialRX, SerialTX); // RX, TX
@@ -404,17 +420,17 @@ st_tsens Ts2	;
 
 unsigned int used_sensors = 0	;    			//bit array
 
-double T_setpoint 			= 26.5;  
+double T_setpoint 			= 26.5;
 double T_setpoint_lastsaved		= T_setpoint;
-double T_EEV_setpoint 			= EEV_OVERHEATING;  
-double T_EEV_overheating		= 0.0;		//real, used during run
+double T_EEV_setpoint 			= EEV_TARGET_TEMP_DIFF;  
+double T_EEV_dt				= 0.0;		//real, used during run
 const double cT_setpoint_max 		= 45.0;  
-const double cT_heat_delta_min 		= 2.0;
-const double cT_sump_min 		= 8.0;
-const double cT_sump_max 		= 101.0;
+const double cT_hotcircle_delta_min 	= 2.0;
+const double cT_sump_min 		= 9.0;
+const double cT_sump_max 		= 110.0;
 const double cT_sump_heat_threshold 	= 16.0;
 //const double cT_sump_outerT_threshold	= 18.0;    	//?? seems to be not useful
-const double cT_before_condenser_max 	= 99.0;      
+const double cT_before_condenser_max 	= 108.0;      
 const double cT_after_evaporator_min 	= -7.0;      	// working evaporation presure ~= -10, it is constant due to large evaporator volume     // waterhouse v1: -12 is too high
 const double cT_cold_min 		= -8.0;
 const double cT_hotout_max 		= 50.0;
@@ -425,15 +441,15 @@ const double c_wattage_max 		= MAX_WATTS;   	//FUNAI: 1000W seems to be normal w
 							//PH165X1CY : 920 Watts, 4.2 A  
 const double c_workingOK_wattage_min 	= c_wattage_max/2.5;     //
 
-int heatpump_state    		= 0;
-int hotside_circle_state  	= 0;
-int coldside_circle_state 	= 0;
-int sump_heater_state    	= 0;
+bool heatpump_state    		= 0;
+bool hotside_circle_state  	= 0;
+bool coldside_circle_state 	= 0;
+bool sump_heater_state    	= 0;
 
 const long poweron_pause     	= POWERON_PAUSE    ;    	//default 5 mins
 const long mincycle_poweroff 	= MINCYCLE_POWEROFF;    	//default 5 mins
 const long mincycle_poweron  	= MINCYCLE_POWERON ;  		//default 60 mins
-int _1st_start_sleeped 		= 0;
+bool _1st_start_sleeped 		= 0;
 //??? TODO: periodical start ?
 //const long floor_circle_maxhalted = 6000000;  //circle NOT works max 100 minutes
 const long deffered_stop_hotcircle = DEFFERED_STOP_HOTCIRCLE;
@@ -592,6 +608,18 @@ void InitS_and_D(void) {
 	RS485Serial.begin(9600);
 }
 
+void PrintS (String str) {
+	#ifdef RS485_HUMAN
+		char *outChar=&str[0];  
+		digitalWrite(SerialTxControl, RS485Transmit);
+		delay(1);    
+		RS485Serial.print(outChar);
+		RS485Serial.println();
+		RS485Serial.flush();
+		digitalWrite(SerialTxControl, RS485Receive);  
+	#endif
+}
+
 void PrintS_and_D (String str, int printSerial = 1) {
 	char *outChar=&str[0];  
 	//#ifdef RS485_HUMAN
@@ -620,18 +648,22 @@ void PrintS_and_D (String str, int printSerial = 1) {
 	#endif
 }
 
-void _PrintHelp(void) {   
-	//sprintf(tweetMsg, "first variable = %d, 2nd variable = %ul", var1, var2) 
-	PrintS_and_D( "CHPC, https://github.com/gonzho000/chpc/ fw: " + fw_version  + " board: "+ hw_version);
-	PrintS_and_D(F("Commands:"));
-	PrintS_and_D(F("(?) help"));
-	PrintS_and_D(F("(+) increase aim T"));
-	PrintS_and_D(F("(-) decrease aim T"));
-	#ifdef EEV_SUPPORT
-		PrintS_and_D(F("(<) increase EEV overheating UNIMPLEMENTED!!!"));
-		PrintS_and_D(F("(>) decrease EEV overheating UNIMPLEMENTED!!!"));
+void Print_D2 () {
+	#ifdef   DISPLAY_1602
+		lcd.setCursor(0, 1);
+		lcd.print(outString);
 	#endif
-	PrintS_and_D(F("(G) get stats"));
+}
+
+
+
+void _PrintHelp(void) {   
+	PrintS( "CHPC, https://github.com/gonzho000/chpc/ fw: " + fw_version  + " board: "+ hw_version);
+	PrintS(F("Commands: \n (?) help\n (+) increase aim T\n (-) decrease aim T\n \n"));		
+	#ifdef EEV_SUPPORT
+		PrintS(F("(<) decrease EEV T diff \n(>) increase EEV T diff"));
+	#endif
+	PrintS(F("(G) get stats"));
 }
 
 void PrintS_and_D_double (double double_to_print) {
@@ -641,7 +673,7 @@ void PrintS_and_D_double (double double_to_print) {
 
 int Inc_T (void) {
 	if (T_setpoint + 0.5 > cT_setpoint_max) {
-		PrintS_and_D(F("ERR: Max T!"));	
+		PrintS_and_D(F("Max!"));	
 		delay (200);
 		return 0;
 	}
@@ -652,7 +684,7 @@ int Inc_T (void) {
 
 int Dec_T (void) {
 	if (T_setpoint - 0.5 < 1.0) {
-		PrintS_and_D(F("ERR: Min T!"));	
+		PrintS_and_D(F("Min!"));	
 		delay (200);
 		return 0;
 	}
@@ -715,8 +747,9 @@ void ReadEECheckAddr(unsigned char *to_addr) {
 	CheckIsInvalidCRCAddr(to_addr);
 	if (i != 0) {
 		while (1) { 
+			//PrintAddr(to_addr);
 			PrintS_and_D(F("Err:EEPROM, reinit!"));
-			delay(1000);
+			delay(5000);
 		}
 	}
 }
@@ -759,7 +792,6 @@ void SaveSetpointEE(void) {
 			WriteFloatEEPROM(eeprom_addr, T_setpoint);
 			millis_lasteesave = millis_now;
 			T_setpoint_lastsaved = T_setpoint;
-			//PrintS_and_D("Deb: EEsave!"); //!!!
 		}
 }
 
@@ -804,7 +836,7 @@ unsigned char FindAddr(String what, int required = 0) {
 			delay(1000);
 		}
 		if ( OneWire::crc8( dev_addr, 7) != dev_addr[7]) {
-			RS485Serial.print("Invalid CRC!\n");
+			PrintS_and_D(F("Invalid CRC! Remove and insert same sensor!\n"));
 			delay(200);
 			continue;
 		} else if (CheckAddrExists() == 1) {
@@ -816,10 +848,10 @@ unsigned char FindAddr(String what, int required = 0) {
 		}
 	}
 	while (1) {
-		PrintAddr(dev_addr);
+		//PrintAddr(dev_addr);
 		delay(1000);
 		if (s_allTsensors.getAddress(dev_addr, 0)) {
-			PrintS_and_D("Remove " + what);
+			PrintS_and_D("OK! Remove " + what);
 			delay(1000);
 		} else {
 			delay(100);
@@ -907,6 +939,7 @@ void off_EEV(){	//1 = do not take care of position
 	digitalWrite	(EEV_2,	0);
 	digitalWrite	(EEV_3,	0);
 	digitalWrite	(EEV_4,	0);
+	//PrintS_and_D("off_EEV");
 }
 
 #endif
@@ -1050,7 +1083,7 @@ void setup(void) {
 		eeprom_addr += 1;
 		T_setpoint = ReadFloatEEPROM(eeprom_addr);
 		eeprom_addr += 4;
-		PrintS_and_D("EEPROM->T " + String(T_setpoint));
+		//PrintS_and_D("EEPROM->T " + String(T_setpoint));
 		
 		z = EEPROM.read(eeprom_addr);  //high
 		eeprom_addr += 1;
@@ -1079,21 +1112,35 @@ void setup(void) {
 				}
 			}
 		#endif
-	
 		ReadEECheckAddr(Tae.addr);  //eeprom_addr incremeneted here
+		//PrintS_and_D("k:Tae");
 		ReadEECheckAddr(Tbe.addr);  //eeprom_addr incremeneted here
+		//PrintS_and_D("k:Tbe");
 		ReadEECheckAddr(Ttarget.addr);  //eeprom_addr incremeneted here
+		//PrintS_and_D("k:Ttarget");
 		ReadEECheckAddr(Tsump.addr);  //eeprom_addr incremeneted here
+		//PrintS_and_D("k:Tsump");
 		ReadEECheckAddr(Tci.addr);  //eeprom_addr incremeneted here
+		//PrintS_and_D("k:Tci");
 		ReadEECheckAddr(Tco.addr);  //eeprom_addr incremeneted here
+		//PrintS_and_D("k:Tco");
 		ReadEECheckAddr(Thi.addr);  //eeprom_addr incremeneted here
+		//PrintS_and_D("k:Thi");
 		ReadEECheckAddr(Tho.addr);  //eeprom_addr incremeneted here
+		//PrintS_and_D("k:Tho");
 		ReadEECheckAddr(Tbc.addr);  //eeprom_addr incremeneted here
+		//PrintS_and_D("k:Tbc");
 		ReadEECheckAddr(Tac.addr);  //eeprom_addr incremeneted here
+		//PrintS_and_D("k:Tac");
 		ReadEECheckAddr(Touter.addr);  //eeprom_addr incremeneted here
+		//PrintS_and_D("k:Touter");
 		ReadEECheckAddr(Ts1.addr);  //eeprom_addr incremeneted here
+		//PrintS_and_D("k:Ts1");
 		ReadEECheckAddr(Ts2.addr);  //eeprom_addr incremeneted here
+		//PrintS_and_D("k:Ts2");
 		
+		/*
+		//?code duplicated, see ReadEECheckAddr
 		i = 0;
 		if (Tae.e == 1) 	CheckIsInvalidCRCAddr(Tae.addr	);
 		if (Tbe.e == 1) 	CheckIsInvalidCRCAddr(Tbe.addr	);
@@ -1111,11 +1158,12 @@ void setup(void) {
 		if (i != 0) {
 			while ( 1 ) { PrintS_and_D(F("EEPROM err1!")); delay (1000); }
 		}
+		*/
 	} else {
 		eeprom_addr += 1;
 		ishuman += 1;
 		WriteFloatEEPROM(eeprom_addr, T_setpoint);
-		PrintS_and_D(F("init EEPROM"));
+		//PrintS_and_D(F("init EEPROM"));
 		eeprom_addr += 4;
 		eeprom_addr += 2; //used sensors, skip
 		//Ttarget -needed, other - optional
@@ -1229,11 +1277,11 @@ void loop(void) {
 	//----------------------------- self-test !!!
 	/*
 	digitalWrite(RELAY_HEATPUMP,HIGH);
-	//delay(300);
+	delay(300);
 	digitalWrite(RELAY_HOTSIDE_CIRCLE,HIGH);
-	//delay(300);
+	delay(300);
 	digitalWrite(RELAY_COLDSIDE_CIRCLE,HIGH);
-	//delay(300);
+	delay(300);
 	digitalWrite(RELAY_SUMP_HEATER,HIGH);
 	delay(2000);
 	digitalWrite(RELAY_HEATPUMP,LOW);
@@ -1333,16 +1381,22 @@ void loop(void) {
 				EEV_cur_pos = 0;	
 			}
 			millis_eev_last_step = millis_now;
-			PrintS_and_D(String(EEV_cur_pos));		//!!!!
+			#ifdef EEV_DEBUG 
+				PrintS(String(EEV_cur_pos));	
+			#endif
 		}
 	#endif
 	//--------------------async fuctions END    
 	
-	if (  heatpump_state == 1   &&  async_wattage > c_wattage_max   ){
-		PrintS_and_D(F("Overload stop."));
-		millis_last_heatpump_on = millis_now;
-		heatpump_state = 0;
-		digitalWrite(RELAY_HEATPUMP, heatpump_state);
+	if ( heatpump_state == 1   &&  async_wattage > c_wattage_max  ) {
+		if (  ((unsigned long)(millis_now - millis_last_heatpump_off) > POWERON_HIGHTIME )	||	(async_wattage > c_wattage_max*2)) {
+			#ifdef RS485_HUMAN 
+				PrintS(("Overload." + String(async_wattage)));
+			#endif
+			millis_last_heatpump_on = millis_now;
+			heatpump_state = 0;
+			digitalWrite(RELAY_HEATPUMP, heatpump_state);
+		}
 	}
 	
 	//-------------------buttons processing
@@ -1371,7 +1425,7 @@ void loop(void) {
 					if ( i == 1 ) {
 						T_EEV_setpoint += 0.25;
 					}
-					PrintS_and_D("New EEV o.h.: " + String(T_EEV_setpoint));
+					PrintS_and_D("New EEV Td: " + String(T_EEV_setpoint));
 					delay(300);
 				#endif
 			}
@@ -1391,6 +1445,16 @@ void loop(void) {
 					outString +=  "ERR";
 				}
 				PrintS_and_D(outString, 1);    //do not print serial
+				
+				//2
+				//#ifdef EEV_SUPPORT
+				//	outString = "Tbe:" + String(Tbe.T, 1) + "Tae:" + String(Tbe.T, 1);
+				//	Print_D2();
+				//#endif
+				if (Touter.e == 1){
+					outString = "Outer:" + String(Touter.T, 1);
+					Print_D2();
+				}
 			#else
 				outString = "be:";
 				if (Tbe.e == 1){
@@ -1430,7 +1494,9 @@ void loop(void) {
 							(Ts1.e == 1 && Ts1.T == -127 )	|| 
 							(Ts2.e == 1 && Ts2.T == -127 )             ) ) {
 										errorcode = ERR_T_SENSOR;
-										PrintS_and_D("ERR:T.sens." + String(errorcode));
+										#ifdef RS485_HUMAN 
+											PrintS_and_D("ERR:T.sens." + String(errorcode)); 
+										#endif
 		}
 		//auto-clean sensor error on sensor appear	
 		// add 1xor enable here!
@@ -1455,7 +1521,9 @@ void loop(void) {
 		if ( errorcode != ERR_OK ) {
 			if (  ((unsigned long)(millis_now - millis_notification) > millis_notification_interval)  ||  millis_notification == 0 ) {
 				millis_notification = millis_now;
-				PrintS_and_D("Error:" + String(errorcode));
+				#ifdef RS485_HUMAN 
+					PrintS_and_D("Error:" + String(errorcode));
+				#endif
 				for ( i = 0; i < errorcode; i++) {
 					tone(speakerOut, ERR_HZ);  	delay (500);      
 					noTone(speakerOut);      	delay (500);
@@ -1465,6 +1533,8 @@ void loop(void) {
 
 		//-------------- EEV cycle
 		#ifdef EEV_SUPPORT
+			/*
+			//v1 algo
 			if ( EEV_apulses == 0 )	{
 				if ( 	((async_wattage < c_workingOK_wattage_min) && ((unsigned long)(millis_now - millis_eev_last_close) > EEV_CLOSEEVERY))		||  millis_eev_last_close == 0  ){
 					PrintS_and_D("EEV: FULL closing");//!!!
@@ -1491,39 +1561,39 @@ void loop(void) {
 						EEV_fast = 1;
 					}
 				} else if (errorcode == 0 && async_wattage > c_workingOK_wattage_min) {
-					T_EEV_overheating = Tae.T - Tbe.T;
-					PrintS_and_D("EEV: driving " + String(T_EEV_overheating));//!!!
+					T_EEV_dt = Tae.T - Tbe.T;
+					PrintS_and_D("EEV: driving " + String(T_EEV_dt));//!!!
 					if (EEV_cur_pos <= 0){
 						PrintS_and_D("EEV: full close protection");	
 						if (EEV_OPEN_AFTER_CLOSE != 0) {				//full close protection
 							EEV_apulses = +EEV_OPEN_AFTER_CLOSE;
+							EEV_adonotcare = 0;
 							EEV_fast = 1;
 						}
-						EEV_adonotcare = 0;
 					} else if (EEV_cur_pos > 0) {
-						if (T_EEV_overheating  < (T_EEV_setpoint - EEV_EMERG_DIFF) ) {				//emerg!
+						if (T_EEV_dt  < (T_EEV_setpoint - EEV_EMERG_DIFF) ) {				//emerg!
 							PrintS_and_D("EEV: emergency closing!");//!!!
 							EEV_apulses = -EEV_EMERG_STEPS;
 							EEV_adonotcare = 0;
 							EEV_fast = 1;
-						} else if (T_EEV_overheating  < T_EEV_setpoint) {					//too
+						} else if (T_EEV_dt  < T_EEV_setpoint) {					//too
 							PrintS_and_D("EEV: closing");//!!!
 							//EEV_apulses = -EEV_NONPRECISE_STEPS;
 							EEV_apulses = -1;
 							EEV_adonotcare = 0;
 							EEV_fast = 0;
-						} else if (T_EEV_overheating  > T_EEV_setpoint + EEV_HYSTERESIS + EEV_PRECISE_START) {	//very
+						} else if (T_EEV_dt  > T_EEV_setpoint + EEV_HYSTERESIS + EEV_PRECISE_START) {	//very
 							PrintS_and_D("EEV: fast opening");//!!!
 							//EEV_apulses =  +EEV_NONPRECISE_STEPS;
 							EEV_apulses =  +1;
 							EEV_adonotcare = 0;
 							EEV_fast = 1;
-						} else if (T_EEV_overheating > T_EEV_setpoint + EEV_HYSTERESIS) {			//too
+						} else if (T_EEV_dt > T_EEV_setpoint + EEV_HYSTERESIS) {			//too
 							PrintS_and_D("EEV: opening");//!!!
 							EEV_apulses =  +1;
 							EEV_adonotcare = 0;
 							EEV_fast = 0;
-						} else if (T_EEV_overheating  > T_EEV_setpoint) {					//ok
+						} else if (T_EEV_dt  > T_EEV_setpoint) {					//ok
 							PrintS_and_D("EEV: OK");//!!!
 							//
 						}
@@ -1532,11 +1602,128 @@ void loop(void) {
 				} 
 				
 			}
-			if (	((unsigned long)(millis_now - millis_eev_last_on) > 10000)  ||  millis_eev_last_on == 0 ) {
-				PrintS_and_D("EEV: ON/OFF");//!!!
-				on_EEV();
-				delay(30);	//!!!
+			*/
+			//v1.1 algo
+			if ( errorcode == 0 && async_wattage > c_workingOK_wattage_min && EEV_cur_pos > 0 )	{
+				T_EEV_dt = Tae.T - Tbe.T;
+				#ifdef EEV_DEBUG
+					PrintS("EEV Td: " + String(T_EEV_dt));
+				#endif
+				if ( EEV_apulses >= 0 && EEV_cur_pos >= EEV_MINWORKPOS)	{
+					if (T_EEV_dt  < (T_EEV_setpoint - EEV_EMERG_DIFF) ) {				//emerg!
+						#ifdef EEV_DEBUG
+							PrintS(F("EEV: 1 emergency closing!"));
+						#endif
+						EEV_apulses = -1;
+						EEV_adonotcare = 0;
+						EEV_fast = 1;
+					} else if (T_EEV_dt  < T_EEV_setpoint) {					//too
+						#ifdef EEV_DEBUG
+							PrintS(F("EEV: 2 closing"));
+						#endif
+						//EEV_apulses = -EEV_NONPRECISE_STEPS;
+						EEV_apulses = -1;
+						EEV_adonotcare = 0;
+						EEV_fast = 0;
+					}
+					//faster open when needed, condition copypasted (see EEV_apulses <= 0)
+					if (T_EEV_dt  > T_EEV_setpoint + EEV_HYSTERESIS + EEV_PRECISE_START) {		//very
+						#ifdef EEV_DEBUG
+							PrintS(F("EEV: 3 enforce faster opening"));
+						#endif
+						//EEV_apulses =  +EEV_NONPRECISE_STEPS;
+						//EEV_apulses =  +1;
+						EEV_adonotcare = 0;
+						EEV_fast = 1;
+					}
+				}
+				if ( EEV_apulses <= 0 )	{
+					if (T_EEV_dt  > T_EEV_setpoint + EEV_HYSTERESIS + EEV_PRECISE_START) {		//very
+						#ifdef EEV_DEBUG
+							PrintS(F("EEV: 4 fast opening"));
+						#endif
+						//EEV_apulses =  +EEV_NONPRECISE_STEPS;
+						EEV_apulses =  +1;
+						EEV_adonotcare = 0;
+						EEV_fast = 1;
+					} else if (T_EEV_dt > T_EEV_setpoint + EEV_HYSTERESIS) {			//too
+						#ifdef EEV_DEBUG
+							PrintS(F("EEV: 5 opening"));
+						#endif
+						EEV_apulses =  +1;
+						EEV_adonotcare = 0;
+						EEV_fast = 0;
+					} else if (T_EEV_dt  > T_EEV_setpoint) {					//ok
+						#ifdef EEV_DEBUG
+							PrintS(F("EEV: 6 OK"));
+						#endif
+						//
+					}
+					//faster closing when needed, condition copypasted (see EEV_apulses >= 0)
+					if (T_EEV_dt  < (T_EEV_setpoint - EEV_EMERG_DIFF) ) {				//emerg!
+						#ifdef EEV_DEBUG
+							PrintS(F("EEV: 7 enforce faster closing!"));
+						#endif
+						//EEV_apulses = -EEV_EMERG_STEPS;
+						EEV_adonotcare = 0;
+						EEV_fast = 1;
+					}
+				}
 				off_EEV();
+			}
+			if ( EEV_apulses == 0 )	{
+				if ( 	((async_wattage < c_workingOK_wattage_min) && ((unsigned long)(millis_now - millis_eev_last_close) > EEV_CLOSEEVERY))		||  millis_eev_last_close == 0  ){	//close every 24h by default
+					#ifdef EEV_DEBUG
+						PrintS(F("EEV: 10 FULL closing"));
+					#endif
+					if ( millis_eev_last_close != 0 ) {
+						EEV_apulses =  -(EEV_cur_pos + EEV_CLOSE_ADD_PULSES);
+					} else {
+						EEV_apulses =  -(EEV_MAXPULSES + EEV_CLOSE_ADD_PULSES);
+					}
+					EEV_adonotcare = 1;
+					EEV_fast = 1;
+					//delay(EEV_STOP_HOLD);
+					millis_eev_last_close = millis_now;
+				} else if (errorcode != 0 || async_wattage < c_workingOK_wattage_min) {		//err or sleep
+					if (EEV_cur_pos > 0  && EEV_cur_pos > EEV_OPEN_AFTER_CLOSE) {	//waiting pos. set
+						#ifdef EEV_DEBUG
+							PrintS(F("EEV: 11 close before open"));
+						#endif
+						EEV_apulses =  -(EEV_cur_pos + EEV_CLOSE_ADD_PULSES);
+						EEV_adonotcare = 1;
+						EEV_fast = 1;
+					}
+				}
+				off_EEV();
+			}
+			if ( EEV_apulses == 0 && async_wattage < c_workingOK_wattage_min && EEV_cur_pos < EEV_OPEN_AFTER_CLOSE) {
+				#ifdef EEV_DEBUG
+					PrintS(F("EEV: 12 full close protection"));
+				#endif
+				if (EEV_OPEN_AFTER_CLOSE != 0) {				//full close protection
+					EEV_apulses = EEV_OPEN_AFTER_CLOSE - EEV_cur_pos;
+					EEV_adonotcare = 0;
+					EEV_fast = 1;
+				}
+				off_EEV();
+			}
+			if ( EEV_apulses == 0 && async_wattage >= c_workingOK_wattage_min && EEV_cur_pos < EEV_MINWORKPOS) {
+				#ifdef EEV_DEBUG
+					PrintS(F("EEV: 13 open to work"));	
+				#endif
+				if (EEV_OPEN_AFTER_CLOSE != 0) {				//full close protection
+					EEV_apulses = EEV_MINWORKPOS - EEV_cur_pos;
+					EEV_adonotcare = 0;
+					EEV_fast = 1;
+				}
+				off_EEV();
+			}
+			if (	((unsigned long)(millis_now - millis_eev_last_on) > 10000)  ||  millis_eev_last_on == 0 ) {
+				//PrintS_and_D("EEV: ON/OFF");
+				on_EEV();
+				//delay(30);
+				//off_EEV();	//off_EEV called everywhere takes care of it
 				millis_eev_last_on  =  millis_now;
 			}
 		#endif
@@ -1559,8 +1746,8 @@ void loop(void) {
 	
 			//main logic
 			if (_1st_start_sleeped == 0) {
-				PrintS_and_D("!!!!sleep disabled!!!!");
-				_1st_start_sleeped = 1;
+				//PrintS_and_D("!!!!sleep disabled!!!!");
+				//_1st_start_sleeped = 1;
 				if ( (millis_now < poweron_pause) && (_1st_start_sleeped == 0) ) {
 					PrintS_and_D("Wait: " + String(((poweron_pause-millis_now))/1000) + " s.");
 					return;
@@ -1582,7 +1769,7 @@ void loop(void) {
 			//    and (t cold out > cold min)
 			if ( 	heatpump_state == 0     		&&
 				(((unsigned long)(millis_now - millis_last_heatpump_on) > mincycle_poweroff)   ||   (millis_last_heatpump_on == 0)  )  &&
-				//( tr_hot_out < (tr_sens_1 + cT_heat_delta_min)  )    &&
+				//( tr_hot_out < (tr_sens_1 + cT_hotcircle_delta_min)  )    &&
 				errorcode == 0         							&&
 				( (Tsump.e == 1 	&& Tsump.T > cT_sump_min)  	|| (Tsump.e^1))	&&
 				( (Tsump.e == 1 	&& Tsump.T < cT_sump_max)  	|| (Tsump.e^1))	&&
@@ -1592,7 +1779,9 @@ void loop(void) {
 				( (Tbc.e == 1 	&& Tbc.T < cT_before_condenser_max) 	|| (Tbc.e^1))	&&
 				( (Tci.e == 1 	&& Tci.T > cT_cold_min)  		|| (Tci.e^1))	&&
 				( (Tco.e == 1 	&& Tco.T > cT_cold_min) 		|| (Tco.e^1))	) {
-					PrintS_and_D(F("Start"));
+					#ifdef RS485_HUMAN
+						PrintS(F("Start"));
+					#endif
 					millis_last_heatpump_off = millis_now;
 					heatpump_state = 1;
 			}
@@ -1600,7 +1789,9 @@ void loop(void) {
 			//stop if
 			//    ( (last_off > N) and (t watertank > target) )
 			if ( heatpump_state == 1     &&     ((unsigned long)(millis_now - millis_last_heatpump_off) > mincycle_poweron)    &&    (Ttarget.T > T_setpoint)) {
-				PrintS_and_D(F("Normal stop"));
+				#ifdef RS485_HUMAN 
+					PrintS(F("Normal stop"));
+				#endif
 				millis_last_heatpump_on = millis_now;
 				heatpump_state = 0;
 			}
@@ -1609,18 +1800,24 @@ void loop(void) {
 			//start if (heatpump_enabled)
 			//stop if (heatpump_disabled and (t hot out or in < t target + heat delta min) )
 			if (  (heatpump_state == 1)   &&  (hotside_circle_state  == 0)  ) {    
-				PrintS_and_D(F("Hot WP ON"));
+				#ifdef RS485_HUMAN 
+					PrintS(F("Hot WP ON"));
+				#endif
 				hotside_circle_state  = 1;
 			}
 			
 			if (  (heatpump_state == 0)        &&    (hotside_circle_state  == 1) ) {
 				if (  (deffered_stop_hotcircle != 0 	&& 	((unsigned long)(millis_now - millis_last_heatpump_on) > deffered_stop_hotcircle)   )	) {
-					if ( 	(Tho.e == 1 && Tho.T < (Ttarget.T + cT_heat_delta_min))	||
-						(Thi.e == 1 && Thi.T < (Ttarget.T + cT_heat_delta_min))	) {
-						PrintS_and_D(F("Hot WP OFF 1"));
+					if ( 	(Tho.e == 1 && Tho.T < (Ttarget.T + cT_hotcircle_delta_min))	||
+						(Thi.e == 1 && Thi.T < (Ttarget.T + cT_hotcircle_delta_min))	) {
+						#ifdef RS485_HUMAN 
+							PrintS(F("Hot WP OFF 1"));
+						#endif
 						hotside_circle_state  = 0;
 					} else {
-						PrintS_and_D(F("Hot WP OFF 2"));
+						#ifdef RS485_HUMAN 
+							PrintS(F("Hot WP OFF 2"));
+						#endif
 						hotside_circle_state  = 0;
 					}
 				}
@@ -1628,9 +1825,11 @@ void loop(void) {
 			
 			//heat if we can, just in case, ex. if lost power
 			if ( (hotside_circle_state  == 0) && 
-				( Tho.e == 1 && Tho.T > (Ttarget.T + cT_heat_delta_min)  )  	||
-				( Thi.e == 1 && Thi.T > (Ttarget.T + cT_heat_delta_min)  )  ) {
-					PrintS_and_D(F("Hot WP ON"));
+				( Tho.e == 1 && Tho.T > (Ttarget.T + cT_hotcircle_delta_min)  )  	||
+				( Thi.e == 1 && Thi.T > (Ttarget.T + cT_hotcircle_delta_min)  )  ) {
+					#ifdef RS485_HUMAN 
+						PrintS(F("Hot WP ON"));
+					#endif
 					hotside_circle_state  = 1;
 			}
 			
@@ -1638,12 +1837,16 @@ void loop(void) {
 			//start if (heatpump_enabled)
 			//stop if (heatpump_disbled)
 			if (  (heatpump_state == 1)   &&  (coldside_circle_state  == 0)  ) {
-				PrintS_and_D(F("Cold WP ON"));
+				#ifdef RS485_HUMAN 
+					PrintS(F("Cold WP ON"));
+				#endif
 				coldside_circle_state  = 1;
 			}
 			
 			if (  (heatpump_state == 0)   &&  (coldside_circle_state  == 1)  ) {
-				PrintS_and_D(F("Cold WP OFF"));
+				#ifdef RS485_HUMAN 
+					PrintS(F("Cold WP OFF"));
+				#endif
 				coldside_circle_state  = 0;
 			}
 			
@@ -1665,7 +1868,9 @@ void loop(void) {
 					(Tbc.e 	== 1 	&& 	Tbc.T 	> cT_before_condenser_max) ||
 					(Tci.e 	== 1 	&& 	Tci.T 	< cT_cold_min )       	||
 					(Tco.e 	== 1 	&& 	Tco.T 	< cT_cold_min) )     ) {
-						PrintS_and_D(F("Protective stop"));
+						#ifdef RS485_HUMAN 
+							PrintS(F("Protective stop"));
+						#endif
 						millis_last_heatpump_on = millis_now;
 						heatpump_state = 0;
 						digitalWrite(RELAY_HEATPUMP, heatpump_state);
@@ -1673,11 +1878,12 @@ void loop(void) {
 			
 			//alive_check_cycle_after_5_mins:
 			//error if
+			//v1.3: not error, just poweroff all
 			//      or (t cold in - t cold out < t workingok min)
 			//      or (t hot out - t hot in < t workingok min)
 			//      or (sump t < 25'C)
 			//      or wattage too low
-			/*
+			
 			if (  heatpump_state == 1   &&  ((unsigned long)(millis_now - millis_last_heatpump_off) > 300000)  ) {
 				//cold side processing simetimes works incorrectly, after long period of inactivity, due to T inertia on cold tube sensor, commented out
 				//if ( ( errorcode == ERR_OK )     &&   (  tr_cold_in - tr_cold_out < cT_workingOK_cold_delta_min ) ) {
@@ -1687,19 +1893,26 @@ void loop(void) {
 				//	errorcode = ERR_HOT_PUMP;
 				//}
 				if ( ( errorcode == ERR_OK )     &&   (  Tsump.e == 1 && Tsump.T < cT_workingOK_sump_min )  ) {
-					errorcode = ERR_HEATPUMP;
+					//errorcode = ERR_HEATPUMP;
+					millis_last_heatpump_on = millis_now;
+					heatpump_state = 0;
 				}
 				if ( ( errorcode == ERR_OK )     &&   ( async_wattage < c_workingOK_wattage_min )  ) {
-					errorcode = ERR_WATTAGE;
+					//errorcode = ERR_WATTAGE;
+					millis_last_heatpump_on = millis_now;
+					heatpump_state = 0;
 				}
-			}*/
+				digitalWrite(RELAY_HEATPUMP, heatpump_state);
+			}
 				
 			//disable pump by error
 			if ( errorcode != ERR_OK ) {
 				millis_last_heatpump_on = millis_now;
 				heatpump_state = 0;
 				digitalWrite(RELAY_HEATPUMP, heatpump_state);
-				//PrintS_and_D("Error stop: " + String(errorcode, HEX));
+				#ifdef RS485_HUMAN 
+					PrintS("Error stop: " + String(errorcode, HEX));
+				#endif
 			}
 			
 			//!!! self-test
@@ -1857,7 +2070,7 @@ void loop(void) {
 					}
 					outString += ",\"W1\":" + String(async_wattage);
 					#ifndef EEV_ONLY
-						outString += "\"A1\":" + String(T_setpoint);  //(A)im (target)
+						outString += ",\"A1\":" + String(T_setpoint);  //(A)im (target)
 						outString += ",\"RP\":" + String(heatpump_state*RELAY_HEATPUMP);  
 					#endif
 					if (Tci.e == 1) {
@@ -1871,9 +2084,9 @@ void loop(void) {
 						outString += ",\"THI\":" + String(Thi.T);
 					}
 					#ifndef EEV_ONLY
-						outString += ",\"RSH\":" + String(sump_heater_state*RELAY_SUMP_HEATER);                  
-						outString += ",\"RH\":" + String(hotside_circle_state*RELAY_HOTSIDE_CIRCLE);                  
-						outString += ",\"RC\":" + String(coldside_circle_state*RELAY_COLDSIDE_CIRCLE);  
+						outString += ",\"RSH\":" + String(sump_heater_state*3);                  
+						outString += ",\"RH\":" + String(hotside_circle_state*2);                  
+						outString += ",\"RC\":" + String(coldside_circle_state*1);  
 					#endif
 					if (Tbc.e == 1) {
 						outString += ",\"TBC\":" + String(Tbc.T);
@@ -1892,8 +2105,8 @@ void loop(void) {
 						outString += ",\"TT\":" + String(Ttarget.T);                                
 					}
 					#ifdef EEV_SUPPORT
-						outString += ",\"EEVP\":" + String (EEV_cur_pos);
-						outString += ",\"EEVA\":" + String (T_EEV_setpoint);
+						outString += ",\"EEVP\":" + String(EEV_cur_pos);
+						outString += ",\"EEVA\":" + String(T_EEV_setpoint);
 					#endif
 					outString += "}";
 				} else if ( (inData[2] == 0x54 ) || (inData[2] == 0x45 )) {  //(T)arget or (E)EV target format NN.NN, text
