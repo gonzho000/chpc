@@ -1,4 +1,4 @@
-### CHPC: Cheap Heat Pump Controller v1.0
+### CHPC: Cheap Heat Pump Controller v1.x
 <b>The CHPC a minimal cost Heat Pump (HP) controller, which can be used as provided, or can be adopted to nearly all use cases due to open source nature.</b>
 <br><br>
 
@@ -67,11 +67,11 @@ Only 1 Relay: drives electric heater (any)
 ![medium scheme](./HeatPump_t_sensors_med.png)
 <br><br>
  ## Get your own CHPC:
-* download PCB gerber files
+* download PCB gerber files, *Gerber_\*.zip*
 * search google [where to order PCB](https://www.google.com/search?q=order+pcb) or make your own at CNC machine
 * order electronic components, see BOM (Bill Of Materials) list
 * solder
-* install firmware
+* install firmware *CHPC_firmware.ino*
 * install CHPC at your system
 * enjoy
 <br><br>
