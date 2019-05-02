@@ -22,7 +22,13 @@ Temperature sensors installed:
 
 Controled via both RS-485 and 16x2 display with buttons.
 
+## Changelog
 
+13 apr, 2019: EEV support development started.
+16 apr, 2019: Standalone EEV (no thermostat) with only 2 T sensors written and debugged.
+30 apr, 2019: HP system updated to CHPC.
+01 may, 2019: <b>CHPC fully tested and released. Actial versions: PCB v1.1, firmware v1.3.</b>
+02 may, 2019: PCB v1.3 coming up, main feature: lot of DS18B20 inputs
 
 <br><br>
 ## Applications:
