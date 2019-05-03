@@ -35,7 +35,7 @@ Controled via both RS-485 and 16x2 display with buttons.
 | ---------- | ------------------ | ------------------ | -------------------- |
 | 1. Thermostat.	|  Precision thermostat. Simple and cheap. Only 1 relay and 1 temperature sensor required.<br> | Room heat control. Chicken coop climate control. Distillation column. Else. | N/A	|
 | 2. Heat pump (HP) control. | Controller drives HP system components: compressor, Cold and Hot side Circulating Pumps (CP). Protects system from overload, overheat and freezing up. Drives EEV to optimize running conditions. | DIY heat pump system. Repair module for commercial system. Water heater, house heating systems and same. | Compressor: cold start or overheat. Discharge and suction lines protection. Short-term power loss. Anti-freeze. Power overload protection. |
-| 3. EEV controller. | Only drives EEV, no relays, only 2 T sensors. | Upgrade your system from capilary tube to EEV | Protects from liquid at suction line by design |
+| 3. EEV controller. | Only drives EEV, no relays. Requires 2 T sensors. | Upgrade your system from capilary tube to EEV. | Protects from liquid at suction line by design. |
 
 For more information about Heap Pumps look at [Wikipedia about HP](https://en.wikipedia.org/wiki/Heat_pump)
 <br><br>
