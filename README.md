@@ -40,7 +40,7 @@ Controled via both RS-485 and 16x2 display with buttons.
 For more information about Heap Pumps look at [Wikipedia about HP](https://en.wikipedia.org/wiki/Heat_pump)
 <br><br>
 ## Features:
-- Up to 13 T sensors, requred: see above, others: optional (see "T sensors abbreviations" for full list)
+- Up to 13 T sensors (see "T sensors abbreviations" for full list)
 - 5 relays (Compressor, Hot CP or Air Fun, Cold CP or Air Fun, Sump Heater, 4-way valve)
 - 4 inputs
 - 1602 display support
