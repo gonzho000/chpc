@@ -39,6 +39,15 @@ Controled via both RS-485 and 16x2 display with buttons.
 
 For more information about Heap Pumps look at [Wikipedia about HP](https://en.wikipedia.org/wiki/Heat_pump)
 <br><br>
+## Features:
+- Up to 13 T sensors, requred: see above, others: optional (see "T sensors abbreviations" for full list)
+- 5 relays (Compressor, Hot CP or Air Fun, Cold CP or Air Fun, Sump Heater, 4-way valve)
+- 4 inputs
+- 1602 display support
+- RS485 or Serial(UART 5V) support
+- Automatically turns on/of system when heating required
+- Takes care of system components health
+<br><br>
 ## Control interfaces:
  <b>None:</b> Target temperature uploaded to board with firmware and cannot be changed. System used as fixed thermostat. Target temperature can be changed later with firmware re-upload.<br>
  <b>0.96 OLED or 1602 LCD screen + buttons:</b> Simple, local screen controlled system. Remote control is not possible.<br>
