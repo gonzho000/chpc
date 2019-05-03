@@ -43,6 +43,7 @@ For more information about Heap Pumps look at [Wikipedia about HP](https://en.wi
 - Up to 13 T sensors (see "T sensors abbreviations" for full list)
 - 5 relays (Compressor, Hot CP or Air Fun, Cold CP or Air Fun, Sump Heater, 4-way valve)
 - 4 inputs
+- 5/6 pin EEV connection,
 - 1602 display support
 - RS485 or Serial(UART 5V) support
 - Automatically turns on/of system when heating required
