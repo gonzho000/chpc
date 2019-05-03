@@ -93,21 +93,21 @@ Only 1 Relay: drives electric heater (any)
 ## T sensors abbreviations:
 This abbrevations used in interface during sensors installation procedure
 
-| Abbr. | Full name |
-| ----- | -------------------- |
-| Tae | after evaporator |
-| Tbe | before evaporator |
-| Ttarget | target |
-| Tsump | sump |
-| Tci | cold in |
-| Tco | cold out |
-| Thi | hot in |
-| Tho | hot out |
-| Tbc | before condenser |
-| Tac | after condenser |
-| Touter | outer (outdoor) |
-| Ts1 | additional sensor1 |
-| Ts2 | additional sensor2 |
+| Abbr. | Full name | Required for |
+| ----- | -------------------- | -------------------- |
+| Tae | after evaporator | EEV |
+| Tbe | before evaporator | EEV |
+| Ttarget | target | Thermostat or Thermostat with EEV |
+| Tsump | sump | Automatic Sump Heater and overheat protection |
+| Tci | cold in | Antifreeze protection |
+| Tco | cold out | Antifreeze protection |
+| Thi | hot in |          |
+| Tho | hot out |           |
+| Tbc | before condenser |          |
+| Tac | after condenser |          |
+| Touter | outer (outdoor) |          |
+| Ts1 | additional sensor1 |          |
+| Ts2 | additional sensor2 |          |
 
 <br><br>
  ## Photos:
