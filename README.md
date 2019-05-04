@@ -95,15 +95,15 @@ This abbrevations used in interface during sensors installation procedure
 
 | Abbr. | Full name | Required for |
 | ----- | -------------------- | -------------------- |
-| Tae | after evaporator | EEV |
+| Tae | after evaporator | EEV <br>liquid protection at suction line |
 | Tbe | before evaporator | EEV |
-| Ttarget | target | Thermostat or Thermostat with EEV |
-| Tsump | sump | Automatic Sump Heater and overheat protection |
+| Ttarget | target | Thermostat<br>Thermostat+EEV |
+| Tsump | sump | Automatic Sump Heater<br>Sump overheat protection |
 | Tci | cold in | Antifreeze protection |
 | Tco | cold out | Antifreeze protection |
-| Thi | hot in |          |
-| Tho | hot out |           |
-| Tbc | before condenser |          |
+| Thi | hot in |  Hot CP automatic control   |
+| Tho | hot out | Overheat protection     |
+| Tbc | before condenser | Discharge overheat protection           |
 | Tac | after condenser |          |
 | Touter | outer (outdoor) |          |
 | Ts1 | additional sensor1 |          |
