@@ -95,7 +95,7 @@ This abbrevations used in interface during sensors installation procedure
 
 | Abbr. | Full name | Required for |
 | ----- | -------------------- | -------------------- |
-| Tae | after evaporator | EEV <br>liquid protection at suction line |
+| Tae | after evaporator | EEV <br>Anti-liquid protection at suction line |
 | Tbe | before evaporator | EEV |
 | Ttarget | target | Thermostat<br>Thermostat+EEV |
 | Tsump | sump | Automatic Sump Heater<br>Sump overheat protection |
