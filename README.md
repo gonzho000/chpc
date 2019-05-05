@@ -111,6 +111,7 @@ This abbrevations used in interface during sensors installation procedure
 
 <br><br>
  ## Photos:
+ PCB v1.1, actual version.
  
  ![proto3](./proto3.jpg)
  ![proto3 without screen](./proto3_noscreen.jpg)
