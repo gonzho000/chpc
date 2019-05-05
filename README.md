@@ -126,7 +126,7 @@ This abbrevations used in interface during sensors installation procedure
  ![proto2](./proto2.jpg)
  
  EEV development started here.
- ![EEV dev](./proto2_EEVdev.jpg)
+ ![proto2_EEVdev](./proto2_EEVdev.jpg)
  
  ![proto2 PCB](./proto2_PCB.jpg)
  
