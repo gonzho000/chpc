@@ -120,10 +120,13 @@ This abbrevations used in interface during sensors installation procedure
  ![proto3](./proto3.jpg)
  ![proto3 without screen](./proto3_noscreen.jpg)
  
- This is prototype 2.
+ This is prototype 2 (PCB v1.0).
  1602 is the best choise.
  
  ![proto2](./proto2.jpg)
+ 
+ EEV development started here.
+ ![EEV dev](./proto2_EEVdev.jpg)
  
  ![proto2 PCB](./proto2_PCB.jpg)
  
