@@ -115,7 +115,7 @@ This abbrevations used in interface during sensors installation procedure
  ![v1.3 UNTESTED](./m_v1.3_PCBdemo.png) 
 
  
- PCB v1.1, actual version.
+ PCB v1.1, actual tested version.
  
  ![proto3](./m_proto3.jpg)
  ![proto3 without screen](./m_proto3_noscreen.jpg)
