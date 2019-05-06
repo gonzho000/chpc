@@ -82,7 +82,7 @@ Only 1 Relay: drives electric heater (any)
 ![medium scheme](./m_HeatPump_t_sensors_med.png)
 <br><br>
  ## Get your own CHPC:
-* download PCB gerber files, *Gerber_\*.zip*
+* download PCB gerber file, *CHPC_v1.X_PCB_Gerber.zip*
 * search google [where to order PCB](https://www.google.com/search?q=order+pcb) or make your own at CNC machine
 * order electronic components, see BOM (Bill Of Materials) list
 * solder
