@@ -136,5 +136,8 @@ History ) But worked well for a season.
  ![proto1](./m_proto1.jpg)
 
 <br><br>
+
 ## Author:
 gonzho АТ web.de (c) 2018-2019
+
+If you have any comments or questions, please do not hesitate to contact me.
