@@ -82,9 +82,9 @@ Only 1 Relay: drives electric heater (any)
 ![medium scheme](./m_HeatPump_t_sensors_med.png)
 <br><br>
  ## Get your own CHPC:
-* download PCB gerber file, *CHPC_v1.X_PCB_Gerber.zip*
+* download PCB gerber file, *CHPC_v1.x_PCB_Gerber.zip*
 * search google [where to order PCB](https://www.google.com/search?q=order+pcb) or make your own at CNC machine
-* order electronic components, see BOM (Bill Of Materials) list
+* order electronic components, see BOM (Bill Of Materials) list, *CHPC_v1.x_PCB_BOM.html*
 * solder
 * install firmware *CHPC_firmware.ino*
 * install CHPC at your system
@@ -134,46 +134,6 @@ This abbrevations used in interface during sensors installation procedure
 Prototype 1.
 History ) But worked well for a season.
  ![proto1](./m_proto1.jpg)
-<br><br>
-## BOM (Bill Of Materials), PCB v1.1:
-| Type |	Name |	Quantity |	Case |	Comment |
-| ---- | ---- | ----- | ---- | ---- |
-| R	|	10k ¼W	|	2		
-| R	|	1k ¼W	|	16		
-| R	|	100 ¼W	|	1		
-| R	|	22R ¼W	|	1		
-| R	|	10R ¼W	|	1		
-| Cap	|	0.1 uf	|	4		
-| Cap	|	22uf_16v	|	4		
-| IC	|	PC817C	|	2 or 4	|   |		DIP-4	2 if you use buttons instead of inputs
-| Conn	|	DIP-16 bed	|	3	|	DIP-16	
-| IC	|	ULN2003APG	|	2	|	DIP-16	
-| IC	|	7805 TO-220	|	1	|	TO-220	
-| IC	|	2n2222	|	1	|	TO-92	
-| -	|	SMIH-12VDC-SL-C	|	2		
-| -	|	SRD-12VDC-SL-C	|	3		
-| Module	|	TTL_485_MODULE_8PIN	|	1		
-| Module	|	ARDUINO PRO MINI 328P 5V	|	1		
-| Conn	|	KF128 2.54_screw_1x2	|	1		
-| Conn	|	KF128 2.54_screw_1x4	|	1		
-| Conn	|	KF128 2.54_screw_1x6	|	1		
-| Conn	|	KF128 2.54_screw_1x12	|	1		
-| Conn	|	KF128 3.81_screw_3P	|	5		
-| Conn	|	KF128 5.08_screw_2P	|	3		
-| Conn	|	2.54_legs_female_x2	|	1		|	  |	like used at arduino mega
-| Conn	|	2.54_legs_female_x3	|	1		
-| Conn	|	2.54_legs_female_x4	|	2		
-| Conn	|	2.54_legs_female_x12	|	2		
-| Conn	|	2.54_pins	|	20		
-| Button	|	momentary switch 6x6 2	|	2		
-| Display	|	1602 LCD with i2c interface	|	1		
-| -	|	buzzer	|	1	|	R9.0-2P-4.0PITCH	
-| Module	|	LM2596S module	|	0 or 1	|	XX-to-12 stab	|	Needed only if you will use 24v as power source |
-| -	|	power source, 12v1.25A 70x30x40|		1	|	70x30x40	 
-| IC	|	ds18b20	|	6		|	 |	1 to 13, 6 recommended as fast start |
-| Conv	|	usb→uart	|	1 | 	|			To upload firmware |
-| - |	current sensor sct-013-000  |	1		
-| Conv	|	rs485-USB	|	1 |	 |			To connect CHPC < - > PC/notebook |
 
 <br><br>
 ## Author:
