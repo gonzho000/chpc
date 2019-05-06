@@ -5,7 +5,7 @@
 ## Real life installation.
 Works from ground heat collectors (loops) to radiant in-floor heating system.
 
- ![Installation example](./CHPC_i1.jpg)
+ ![Installation example](./m_CHPC_i1.jpg)
 
 Driving:
 - EEV, 
@@ -59,7 +59,7 @@ For more information about Heap Pumps look at [Wikipedia about HP](https://en.wi
 \* RS-485 specification. Hardware test succeeded on 400 meters line.
 
 Example: day/night setpoint control and data visualisation with "pythonic rs485" way.
-![graph example](./t_graph_example.png)
+![graph example](./m_t_graph_example.png)
 <br><br>
 
 ## Relays:
@@ -79,7 +79,7 @@ Only 1 Relay: drives electric heater (any)
 * 3 sensors needed for "HP with EEV" (absolute minimum scheme)
 <br><br>
 ## Temperature sensors installation example (medium scheme)
-![medium scheme](./HeatPump_t_sensors_med.png)
+![medium scheme](./m_HeatPump_t_sensors_med.png)
 <br><br>
  ## Get your own CHPC:
 * download PCB gerber files, *Gerber_\*.zip*
@@ -112,28 +112,28 @@ This abbrevations used in interface during sensors installation procedure
 <br><br>
  ## Photos:
  Upcoming PCB v1.3, untested now. Lot of small changes here.
- ![v1.3 UNTESTED](./v1.3_PCBdemo.png) 
+ ![v1.3 UNTESTED](./m_v1.3_PCBdemo.png) 
 
  
  PCB v1.1, actual version.
  
- ![proto3](./proto3.jpg)
- ![proto3 without screen](./proto3_noscreen.jpg)
+ ![proto3](./m_proto3.jpg)
+ ![proto3 without screen](./m_proto3_noscreen.jpg)
  
  This is prototype 2 (PCB v1.0).
  1602 is the best choise.
  
- ![proto2](./proto2.jpg)
+ ![proto2](./m_proto2.jpg)
  
  EEV development started here.
  
- ![proto2_EEVdev](./proto2_EEVdev.jpg)
+ ![proto2_EEVdev](./m_proto2_EEVdev.jpg)
  
- ![proto2 PCB](./proto2_PCB.jpg)
+ ![proto2 PCB](./m_proto2_PCB.jpg)
  
 Prototype 1.
 History ) But worked well for a season.
- ![proto1](./proto1.jpg)
+ ![proto1](./m_proto1.jpg)
 <br><br>
 ## BOM (Bill Of Materials), PCB v1.1:
 | Type |	Name |	Quantity |	Case |	Comment |
