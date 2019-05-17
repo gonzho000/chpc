@@ -110,8 +110,7 @@ This abbrevations used in interface during sensors installation procedure
 | Ts2 | additional sensor2 |          |
 
 <br><br>
- ## Photos:
- PCB:
+ ## Photos:<br>
  ![v1.3](./m_PCB_v1.3_noscreen.jpg)
  ![v1.3](./m_PCB_v1.3_screen.jpg)
  ![v1.3](./m_v1.3_PCBdemo.png) 
