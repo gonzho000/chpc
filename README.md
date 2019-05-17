@@ -26,9 +26,9 @@ Controled via both RS-485 and 16x2 display with buttons.
 - 13 apr, 2019: EEV support development started.
 - 16 apr, 2019: Standalone EEV (no thermostat) with only 2 T sensors written and debugged.
 - 30 apr, 2019: HP system updated to CHPC.
-- 01 may, 2019: <b>CHPC fully tested and released. Actial versions: PCB v1.1, firmware v1.3.</b>
-- 02 may, 2019: PCB v1.3 coming up, main feature: lot of DS18B20 inputs
-
+- 01 may, 2019: <b>CHPC fully tested and released
+- 02 may, 2019: PCB rev.1.3 coming up, main feature: lot of DS18B20 inputs
+- 17 may, 2019: PCB 1.3 tested, [assembly instructions added](https://github.com/gonzho000/chpc/wiki/assembly)
 <br><br>
 ## Applications:
 | Usage. |	Brief description. | 	Application examples	| Available protections	|
@@ -85,7 +85,7 @@ Only 1 Relay: drives electric heater (any)
 * download PCB gerber file, *CHPC_v1.x_PCB_Gerber.zip*
 * search google [where to order PCB](https://www.google.com/search?q=order+pcb) or make your own at CNC machine
 * order electronic components, see BOM (Bill Of Materials) list, *CHPC_v1.x_PCB_BOM.html*
-* solder
+* solder, [assembly instructions here](https://github.com/gonzho000/chpc/wiki/assembly)
 * install firmware *CHPC_firmware.ino*
 * install CHPC at your system
 * enjoy
