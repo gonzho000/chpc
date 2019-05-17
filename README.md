@@ -116,7 +116,8 @@ This abbrevations used in interface during sensors installation procedure
  ![v1.3](./m_v1.3_PCBdemo.png) 
 
  
- PCB v1.1, had some usability issues.
+ ## Older revisions and prototypes:<br>
+ PCB v1.1
  
  ![proto3](./m_proto3.jpg)
  ![proto3 without screen](./m_proto3_noscreen.jpg)
