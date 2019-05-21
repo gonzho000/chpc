@@ -29,6 +29,7 @@ Controled via both RS-485 and 16x2 display with buttons.
 - 01 may, 2019: CHPC fully tested and released
 - 02 may, 2019: PCB rev.1.3 coming up, main feature: lot of DS18B20 inputs
 - 17 may, 2019: <b>PCB 1.3 tested, [assembly instructions added](https://github.com/gonzho000/chpc/wiki/assembly)</b>
+- 20 may, 2019: external display support development started
 <br><br>
 ## Applications:
 | Usage. |	Brief description. | 	Application examples	| Available protections	|
