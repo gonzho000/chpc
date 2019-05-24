@@ -128,14 +128,14 @@ This abbrevations used in interface during sensors installation procedure
  
  ![proto2](./m_proto2.jpg)
  
- EEV development started here.
+ EEV development started here, PCB v1.0.
  
  ![proto2_EEVdev](./m_proto2_EEVdev.jpg)
  
  ![proto2 PCB](./m_proto2_PCB.jpg)
  
-Prototype 1.
-History ) But worked well for a season.
+Prototype 1. Say v0.0.
+History ) But worked well for a 2018-19 season.
  ![proto1](./m_proto1.jpg)
 
 <br><br>
