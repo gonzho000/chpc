@@ -30,8 +30,8 @@
 
 #define INPUTS_AS_BUTTONS	1  		//pulldown resistors required!
 
-#define RS485_PYTHON		1  	
-//#define RS485_HUMAN   	2
+//#define RS485_PYTHON		1  	
+#define RS485_HUMAN   	2
 //#define RS485_NONE		3
 
 #define EEV_SUPPORT
@@ -69,7 +69,7 @@
 #define EEV_HYSTERESIS		0.6		//must be less than EEV_PRECISE_START, ex: target difference = 4.0, hysteresis = 0.1, when difference in range 4.0..4.1 no EEV pulses will be done; 
 #define EEV_CLOSEEVERY		86400000	//86400000: every 24 hours, done while HP is NOT working
 #define EEV_TARGET_TEMP_DIFF	4.0		//target difference between Before Evaporator and After Evaporator
-//#define EEV_DEBUG				//used to debug during fine tuning
+//#define EEV_DEBUG				//used to debug during fine tuning, "RS485_HUMAN" only
 
 #define MAGIC     		0x46   		//change if u want to reinit T sensors
 //-----------------------USER OPTIONS END -----------------------
@@ -118,10 +118,10 @@ v1.3, 30 Apr 2019:
 - emergency jumper support
 - inputs support
 - ? rewite re-init proc from MAGIC to emergency jumper removal at board start
-- ? few devices at same lane for RS485_HUMAN
 - ? EEV target to EEPROM
 - ? list T and other things on screen with buttons
 - ? EEV define maximum working position
+- ? few devices at same lane for RS485_HUMAN
 */
 //-----------------------changelog END-----------------------
 
@@ -233,7 +233,7 @@ wattage1
 
 */
 
-String fw_version = "1.3";
+String fw_version = "1.4";
 
 #ifdef DISPLAY_096
 	#define DISPLAY DISPLAY_096
@@ -566,6 +566,7 @@ long ReadVcc() {
 }
 
 char CheckAddrExists(void) { 
+	/*
 	for (i = 0; i < 8; i++) {	if (dev_addr[i] != Tae.addr[i]) break;	}
 	if (i == 8) return 1;
 	for (i = 0; i < 8; i++) {	if (dev_addr[i] != Tbe.addr[i]) break;	}
@@ -591,6 +592,27 @@ char CheckAddrExists(void) {
 	for (i = 0; i < 8; i++) {	if (dev_addr[i] != Ts1.addr[i]) break;}
 	if (i == 8) return 1;
 	for (i = 0; i < 8; i++) {	if (dev_addr[i] != Ts2.addr[i]) break;}
+	if (i == 8) return 1;
+	return 0;	
+	*/
+	//!!!!! optimised v1.4, untested !!!!!
+	for (i = 0; i < 8; i++) {	
+		if (	(dev_addr[i] != Tae.addr[i]) 	&&
+			(dev_addr[i] != Tbe.addr[i]) 	&&
+			(dev_addr[i] != Ttarget.addr[i]) &&
+			(dev_addr[i] != Tsump.addr[i]) 	&&
+			(dev_addr[i] != Tci.addr[i]) 	&&
+			(dev_addr[i] != Tco.addr[i]) 	&&
+			(dev_addr[i] != Thi.addr[i]) 	&&
+			(dev_addr[i] != Tho.addr[i]) 	&&
+			(dev_addr[i] != Tbc.addr[i]) 	&&
+			(dev_addr[i] != Tac.addr[i]) 	&&
+			(dev_addr[i] != Touter.addr[i]) &&
+			(dev_addr[i] != Ts1.addr[i]) 	&&
+			(dev_addr[i] != Ts2.addr[i]) 
+		)
+			break;	
+	}
 	if (i == 8) return 1;
 	return 0;	
 }
@@ -1480,19 +1502,19 @@ void loop(void) {
 	
 		//--------------------important logic
 		//check T sensors
-		if ( ( errorcode == ERR_OK )     && (   (Tae.e == 1 && Tae.T == -127 )  || 
-							(Tbe.e == 1 && Tbe.T == -127 )	|| 
-							(Ttarget.e == 1 && Ttarget.T == -127 )||
-							(Tsump.e == 1 && Tsump.T == -127 ) || 
-							(Tci.e == 1 && Tci.T == -127 )	|| 
-							(Tco.e == 1 && Tco.T == -127 )	|| 
-							(Thi.e == 1 && Thi.T == -127 )	|| 
-							(Tho.e == 1 && Tho.T == -127 )	|| 
-							(Tbc.e == 1 && Tbc.T == -127 )	|| 
-							(Tac.e == 1 && Tac.T == -127 )	|| 
-							(Touter.e == 1 && Touter.T == -127 ) || 
-							(Ts1.e == 1 && Ts1.T == -127 )	|| 
-							(Ts2.e == 1 && Ts2.T == -127 )             ) ) {
+		if ( ( errorcode == ERR_OK )     && (   (Tae.e == 1 && Tae.T == -127 )  	|| 
+							(Tbe.e == 1 && Tbe.T == -127 )		|| 
+							(Ttarget.e == 1 && Ttarget.T == -127 )	||
+							(Tsump.e == 1 && Tsump.T == -127 ) 	|| 
+							(Tci.e == 1 && Tci.T == -127 )		|| 
+							(Tco.e == 1 && Tco.T == -127 )		|| 
+							(Thi.e == 1 && Thi.T == -127 )		|| 
+							(Tho.e == 1 && Tho.T == -127 )		|| 
+							(Tbc.e == 1 && Tbc.T == -127 )		|| 
+							(Tac.e == 1 && Tac.T == -127 )		|| 
+							(Touter.e == 1 && Touter.T == -127 ) 	|| 
+							(Ts1.e == 1 && Ts1.T == -127 )		|| 
+							(Ts2.e == 1 && Ts2.T == -127 )          ) ) {
 										errorcode = ERR_T_SENSOR;
 										#ifdef RS485_HUMAN 
 											PrintS_and_D("ERR:T.sens." + String(errorcode)); 
@@ -1512,7 +1534,7 @@ void loop(void) {
 							( (Tac.e == 1 	&& Tac.T != -127 )	||(Tac.e	^1) )	&& 
 							( (Touter.e == 1 && Touter.T != -127 ) 	||(Touter.e	^1) )	&&
 							( (Ts1.e == 1 	&& Ts1.T != -127 )	||(Ts1.e	^1) )	&&
-							( (Ts2.e == 1 	&& Ts2.T != -127 )        ||(Ts2.e	^1) )     ) ) {
+							( (Ts2.e == 1 	&& Ts2.T != -127 )      ||(Ts2.e	^1) )   ) ) {
 										errorcode = ERR_OK;
 		}
 			
@@ -1712,7 +1734,7 @@ void loop(void) {
 				#ifdef EEV_DEBUG
 					PrintS(F("EEV: 13 open to work"));	
 				#endif
-				if (EEV_OPEN_AFTER_CLOSE != 0) {				//full close protection
+				if (EEV_MINWORKPOS != 0) {					//full close protection
 					EEV_apulses = EEV_MINWORKPOS - EEV_cur_pos;
 					EEV_adonotcare = 0;
 					EEV_fast = 1;
@@ -2055,7 +2077,7 @@ void loop(void) {
 						outString += ",\"TAE\":" + String(Tae.T);
 					}
 					char *outChar=&outString[0];
-					RS485Serial.write(outChar);                        	//dirty hack to transfer long string
+					RS485Serial.write(outChar);                    	//dirty hack to transfer long string
 					RS485Serial.flush();
 					delay (1);                                      //lot of errors without delay
 					outString = "";
@@ -2076,7 +2098,7 @@ void loop(void) {
 					if (Tci.e == 1) {
 						outString += ",\"TCI\":" + String(Tci.T);
 					}
-					RS485Serial.write(outChar);                        //dirty hack to transfer long string
+					RS485Serial.write(outChar);                       //dirty hack to transfer long string
 					RS485Serial.flush();
 					delay (1);                                        //lot of errors without delay
 					outString = "";
@@ -2147,7 +2169,7 @@ void loop(void) {
 					}
 				} else {
 					//default, just for example
-					outString += "{\"result\":\"no_command\"}";
+					outString += "{\"err\":\"no_command\"}";
 				}
 				//crc.integer = CRC16.xmodem((uint8_t& *) outString, outString.length());
 				//outString += (crc, HEX);
