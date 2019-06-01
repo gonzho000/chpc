@@ -43,12 +43,14 @@ For more information about Heap Pumps look at [Wikipedia about HP](https://en.wi
 ## Features:
 - Up to 13 T sensors (see "T sensors abbreviations" for full list)
 - 5 relays (Compressor, Hot CP or Air Fun, Cold CP or Air Fun, Sump Heater, 4-way valve)
+- Relays can switch AC or DC
 - 4 inputs
 - 5/6 pin EEV connection,
 - 1602 display support
 - RS485 or Serial(UART 5V) support
 - Automatically turns on/of system when heating required
 - Takes care of system components health
+- On board or off board power supply
 <br><br>
 ## Control interfaces:
  <b>None:</b> Target temperature uploaded to board with firmware and cannot be changed. System used as fixed thermostat. Target temperature can be changed later with firmware re-upload.<br>
