@@ -42,10 +42,10 @@
 #define WATCHDOG          			//only if u know what to do
 
 //-----------------------TEMPERATURES-----------------------
-#define T_SETPOINT_MAX 		45.0;  	//defines max temperature that ordinary user can set
+#define T_SETPOINT_MAX 		45.0;  		//defines max temperature that ordinary user can set
 #define T_HOTCIRCLE_DELTA_MIN 	2.0;		//useful for "water heater vith intermediate heat exchanger" scheme, Target == sensor in water, hot side CP will be switched on if "target - hot_out > this option"
 #define T_SUMP_MIN 		9.0;		//will not start if T lower
-#define T_SUMP_MAX 		110.0;	//will stop if T higher
+#define T_SUMP_MAX 		110.0;		//will stop if T higher
 #define T_SUMP_HEAT_THRESHOLD 	16.0;		//sump heater will be powered on if T lower
 #define T_BEFORE_CONDENSER_MAX 	108.0;      	//discharge MAX, system stops if discharge higher
 #define T_AFTER_EVAPORATOR_MIN 	-7.0;		//suction MIN, stop if lower, anti-freeze and anti-liquid at suction protection
@@ -126,8 +126,8 @@ v1.3, 30 Apr 2019:
 
 v1.4, 02 Jun 2019:
 - minor fixes
-- T options to header
 - EEV more asyncy
+- T options to header
 
 //TODO:
 - wclose and fclose to EEV
