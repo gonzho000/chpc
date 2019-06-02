@@ -913,13 +913,13 @@ double GetT (unsigned char *str) {
 		#ifdef EEV_SUPPORT
 			eevise();
 		#endif
+		tempdouble = s_allTsensors.getTempC(str);
 		if ( (tempdouble == 85.0) || (tempdouble == -127.0) ) {
 			if ( tempdouble == 85.0 ) {    //initial value in dallas register after poweron
 				delay (375);              //375 actual for 11 bits resolution, 2-3 retries OK for 12-bits resolution
 			} else {
 				delay (37);
 			}
-			tempdouble = s_allTsensors.getTempC(str);
 		} else {
 			break;
 		}
