@@ -412,14 +412,14 @@ DeviceAddress dev_addr;		//temp
 st_tsens Tae	;
 st_tsens Tbe	;
 st_tsens Ttarget;
-st_tsens Tsump;
+st_tsens Tsump	;
 st_tsens Tci	;
 st_tsens Tco	;
 st_tsens Thi	;
 st_tsens Tho	;
 st_tsens Tbc	;
 st_tsens Tac	;
-st_tsens Touter;
+st_tsens Touter	;
 st_tsens Ts1	;
 st_tsens Ts2	;
 
@@ -585,7 +585,7 @@ long ReadVcc() {
 }
 
 char CheckAddrExists(void) { 
-	/*
+	
 	for (i = 0; i < 8; i++) {	if (dev_addr[i] != Tae.addr[i]) break;	}
 	if (i == 8) return 1;
 	for (i = 0; i < 8; i++) {	if (dev_addr[i] != Tbe.addr[i]) break;	}
@@ -613,8 +613,9 @@ char CheckAddrExists(void) {
 	for (i = 0; i < 8; i++) {	if (dev_addr[i] != Ts2.addr[i]) break;}
 	if (i == 8) return 1;
 	return 0;	
-	*/
-	//!!!!! optimised v1.4, untested !!!!!
+	
+	/*
+	//incorrect way: 
 	for (i = 0; i < 8; i++) {	
 		if (	(dev_addr[i] != Tae.addr[i]) 	&&
 			(dev_addr[i] != Tbe.addr[i]) 	&&
@@ -634,6 +635,7 @@ char CheckAddrExists(void) {
 	}
 	if (i == 8) return 1;
 	return 0;	
+	*/
 }
 
 void InitS_and_D(void) {
