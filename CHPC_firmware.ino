@@ -40,6 +40,19 @@
 #define HUMAN_AUTOINFO	10000			//print stats to console
 
 #define WATCHDOG          			//only if u know what to do
+
+//-----------------------TEMPERATURES-----------------------
+#define T_SETPOINT_MAX 		45.0;  	//defines max temperature that ordinary user can set
+#define T_HOTCIRCLE_DELTA_MIN 	2.0;		//useful for "water heater vith intermediate heat exchanger" scheme, Target == sensor in water, hot side CP will be switched on if "target - hot_out > this option"
+#define T_SUMP_MIN 		9.0;		//will not start if T lower
+#define T_SUMP_MAX 		110.0;	//will stop if T higher
+#define T_SUMP_HEAT_THRESHOLD 	16.0;		//sump heater will be powered on if T lower
+#define T_BEFORE_CONDENSER_MAX 	108.0;      	//discharge MAX, system stops if discharge higher
+#define T_AFTER_EVAPORATOR_MIN 	-7.0;		//suction MIN, stop if lower, anti-freeze and anti-liquid at suction protection
+#define T_COLD_MIN 		-8.0;		//cold loop anti-freeze: stop if inlet or outlet temperature lower
+#define T_HOTOUT_MAX 		50.0;		//hot loop: stop if outlet temperature higher than this
+#define T_WORKINGOK_SUMP_MIN 	30.0;        	//used in compressor alive checker: need to be not very high to normal start after deep freeze
+
 //-----------------------TUNING OPTIONS -----------------------
 #define MAX_WATTS		1170.0		//user for power protection
 
@@ -111,7 +124,13 @@ v1.3, 30 Apr 2019:
 - EEV changed "overheating" to "delta T"
 - EEV algo v1.1
 
+v1.4, 02 Jun 2019:
+- minor fixes
+- T options to header
+- EEV more asyncy
+
 //TODO:
+- wclose and fclose to EEV
 - liquid ref. protection: start cold circle and sump heater if tsump =< tco/tci+1
 - periodical start of hot side circle
 - valve_4way
@@ -424,19 +443,19 @@ double T_setpoint 			= 26.5;
 double T_setpoint_lastsaved		= T_setpoint;
 double T_EEV_setpoint 			= EEV_TARGET_TEMP_DIFF;  
 double T_EEV_dt				= 0.0;		//real, used during run
-const double cT_setpoint_max 		= 45.0;  
-const double cT_hotcircle_delta_min 	= 2.0;
-const double cT_sump_min 		= 9.0;
-const double cT_sump_max 		= 110.0;
-const double cT_sump_heat_threshold 	= 16.0;
+const double cT_setpoint_max 		= T_SETPOINT_MAX;  
+const double cT_hotcircle_delta_min 	= T_HOTCIRCLE_DELTA_MIN;
+const double cT_sump_min 		= T_SUMP_MIN;
+const double cT_sump_max 		= T_SUMP_MAX;
+const double cT_sump_heat_threshold 	= T_SUMP_HEAT_THRESHOLD;
 //const double cT_sump_outerT_threshold	= 18.0;    	//?? seems to be not useful
-const double cT_before_condenser_max 	= 108.0;      
-const double cT_after_evaporator_min 	= -7.0;      	// working evaporation presure ~= -10, it is constant due to large evaporator volume     // waterhouse v1: -12 is too high
-const double cT_cold_min 		= -8.0;
-const double cT_hotout_max 		= 50.0;
+const double cT_before_condenser_max 	= T_BEFORE_CONDENSER_MAX;      
+const double cT_after_evaporator_min 	= T_AFTER_EVAPORATOR_MIN;      	// working evaporation presure ~= -10, it is constant due to large evaporator volume     // waterhouse v1: -12 is too high
+const double cT_cold_min 		= T_COLD_MIN;
+const double cT_hotout_max 		= T_HOTOUT_MAX;
 //const double cT_workingOK_cold_delta_min = 0.5; 	// 0.7 - 1st try, 2nd try 0.5
-const double cT_workingOK_hot_delta_min	= 0.5;   
-const double cT_workingOK_sump_min 	= 30.0;        	//need to be not very high to normal start after deep freeze
+//const double cT_workingOK_hot_delta_min	= 0.5;   
+const double cT_workingOK_sump_min 	= T_WORKINGOK_SUMP_MIN;        	//need to be not very high to normal start after deep freeze
 const double c_wattage_max 		= MAX_WATTS;   	//FUNAI: 1000W seems to be normal working wattage INCLUDING 1(one) CR25/4 at 3rd speed
 							//PH165X1CY : 920 Watts, 4.2 A  
 const double c_workingOK_wattage_min 	= c_wattage_max/2.5;     //
@@ -889,6 +908,9 @@ double GetT (unsigned char *str) {
 		#ifdef WATCHDOG
 			wdt_reset();
 		#endif
+		#ifdef EEV_SUPPORT
+			eevise();
+		#endif
 		if ( (tempdouble == 85.0) || (tempdouble == -127.0) ) {
 			if ( tempdouble == 85.0 ) {    //initial value in dallas register after poweron
 				delay (375);              //375 actual for 11 bits resolution, 2-3 retries OK for 12-bits resolution
@@ -1026,6 +1048,52 @@ void halifise(void){
 	#endif
 }
 
+void eevise(void) {
+	if (  	((( EEV_apulses < 0 ) && (EEV_fast == 1))						&&	 ((unsigned long)(millis_now - millis_eev_last_step) > (EEV_PULSE_FCLOSE_MILLIS))  	)	||
+			((( EEV_apulses < 0 ) && (EEV_fast == 0))						&&	 ((unsigned long)(millis_now - millis_eev_last_step) > (EEV_PULSE_CLOSE_MILLIS)	) 	)	||
+			((( EEV_apulses > 0 ) && 			(EEV_cur_pos < EEV_MINWORKPOS  	))	&&	 ((unsigned long)(millis_now - millis_eev_last_step) > (EEV_PULSE_WOPEN_MILLIS)	) 	)	||
+			((( EEV_apulses > 0 ) && (EEV_fast == 1) &&  	(EEV_cur_pos >= EEV_MINWORKPOS	)) 	&&	 ((unsigned long)(millis_now - millis_eev_last_step) > (EEV_PULSE_FOPEN_MILLIS) )	)	||	
+			((( EEV_apulses > 0 ) && (EEV_fast == 0) &&  	(EEV_cur_pos >= EEV_MINWORKPOS	)) 	&&	 ((unsigned long)(millis_now - millis_eev_last_step) > (EEV_PULSE_OPEN_MILLIS)  )	)	||
+			(millis_eev_last_step == 0)
+			) {
+			if ( EEV_apulses != 0 ) {
+				if ( EEV_apulses > 0 ) {
+					if (EEV_cur_pos + 1 <= EEV_MAXPULSES) {
+						EEV_cur_pos += 1;
+						EEV_cur_step += 1;
+						EEV_apulses -= 1;
+					} else {
+						EEV_apulses = 0;
+						//PrintS_and_D("EEmax!");
+					}
+				}
+				if ( EEV_apulses < 0 ) {
+					if (	(EEV_cur_pos - 1 >= EEV_MINWORKPOS)	|| (EEV_adonotcare == 1) ) {
+						EEV_cur_pos -= 1;
+						EEV_cur_step -= 1;
+						EEV_apulses += 1;
+					} else {
+						EEV_apulses = 0;
+						//PrintS_and_D("EEmin!");
+					}
+				}
+				if (EEV_cur_step  > 3) EEV_cur_step = 0;
+				if (EEV_cur_step  < 0) EEV_cur_step = 3;
+				x = EEV_steps[EEV_cur_step];
+				digitalWrite	(EEV_1,	bitRead(x, 0));
+				digitalWrite	(EEV_2,	bitRead(x, 1));
+				digitalWrite	(EEV_3,	bitRead(x, 2));
+				digitalWrite	(EEV_4,	bitRead(x, 3));
+			}
+			if (EEV_cur_pos < 0) { 
+				EEV_cur_pos = 0;	
+			}
+			millis_eev_last_step = millis_now;
+			#ifdef EEV_DEBUG 
+				PrintS(String(EEV_cur_pos));	
+			#endif
+	}
+}
 
 //--------------------------- functions END
 
@@ -1363,50 +1431,7 @@ void loop(void) {
 		
 	}
 	#ifdef EEV_SUPPORT
-		if (  	((( EEV_apulses < 0 ) && (EEV_fast == 1))						&&	 ((unsigned long)(millis_now - millis_eev_last_step) > (EEV_PULSE_FCLOSE_MILLIS))  	)	||
-			((( EEV_apulses < 0 ) && (EEV_fast == 0))						&&	 ((unsigned long)(millis_now - millis_eev_last_step) > (EEV_PULSE_CLOSE_MILLIS)	) 	)	||
-			((( EEV_apulses > 0 ) && 			(EEV_cur_pos < EEV_MINWORKPOS  	))	&&	 ((unsigned long)(millis_now - millis_eev_last_step) > (EEV_PULSE_WOPEN_MILLIS)	) 	)	||
-			((( EEV_apulses > 0 ) && (EEV_fast == 1) &&  	(EEV_cur_pos >= EEV_MINWORKPOS	)) 	&&	 ((unsigned long)(millis_now - millis_eev_last_step) > (EEV_PULSE_FOPEN_MILLIS) )	)	||	
-			((( EEV_apulses > 0 ) && (EEV_fast == 0) &&  	(EEV_cur_pos >= EEV_MINWORKPOS	)) 	&&	 ((unsigned long)(millis_now - millis_eev_last_step) > (EEV_PULSE_OPEN_MILLIS)  )	)	||
-			(millis_eev_last_step == 0)
-			) {
-			if ( EEV_apulses != 0 ) {
-				if ( EEV_apulses > 0 ) {
-					if (EEV_cur_pos + 1 <= EEV_MAXPULSES) {
-						EEV_cur_pos += 1;
-						EEV_cur_step += 1;
-						EEV_apulses -= 1;
-					} else {
-						EEV_apulses = 0;
-						//PrintS_and_D("EEmax!");
-					}
-				}
-				if ( EEV_apulses < 0 ) {
-					if (	(EEV_cur_pos - 1 >= EEV_MINWORKPOS)	|| (EEV_adonotcare == 1) ) {
-						EEV_cur_pos -= 1;
-						EEV_cur_step -= 1;
-						EEV_apulses += 1;
-					} else {
-						EEV_apulses = 0;
-						//PrintS_and_D("EEmin!");
-					}
-				}
-				if (EEV_cur_step  > 3) EEV_cur_step = 0;
-				if (EEV_cur_step  < 0) EEV_cur_step = 3;
-				x = EEV_steps[EEV_cur_step];
-				digitalWrite	(EEV_1,	bitRead(x, 0));
-				digitalWrite	(EEV_2,	bitRead(x, 1));
-				digitalWrite	(EEV_3,	bitRead(x, 2));
-				digitalWrite	(EEV_4,	bitRead(x, 3));
-			}
-			if (EEV_cur_pos < 0) { 
-				EEV_cur_pos = 0;	
-			}
-			millis_eev_last_step = millis_now;
-			#ifdef EEV_DEBUG 
-				PrintS(String(EEV_cur_pos));	
-			#endif
-		}
+		eevise();
 	#endif
 	//--------------------async fuctions END    
 	
