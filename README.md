@@ -11,14 +11,14 @@ Driving:
 - EEV, 
 - Heat Pump Compressor (1kW electrical power),
 - Circulating Pumps,
-- Sump Heater.
+- Compressor Heater.
 
 Temperature sensors installed:
 - Before/After Evaporator,
 - Cold In/Cold Out,
 - Hot In(used as Target)/Hot Out,
 - Outdoor temperature,
-- Sump.
+- Compressor.
 
 Controled via both RS-485 and 16x2 display with buttons.
 
@@ -29,7 +29,6 @@ Controled via both RS-485 and 16x2 display with buttons.
 - 01 may, 2019: CHPC fully tested and released
 - 02 may, 2019: PCB rev.1.3 coming up, main feature: lot of DS18B20 inputs
 - 17 may, 2019: <b>PCB 1.3 tested, [assembly instructions added](https://github.com/gonzho000/chpc/wiki/assembly)</b>
-- 20 may, 2019: external display support development started
 <br><br>
 ## Applications:
 | Usage. |	Brief description. | 	Application examples	| Available protections	|
@@ -42,8 +41,7 @@ For more information about Heap Pumps look at [Wikipedia about HP](https://en.wi
 <br><br>
 ## Features:
 - Up to 13 T sensors (see "T sensors abbreviations" for full list)
-- 5 relays (Compressor, Hot CP or Air Fun, Cold CP or Air Fun, Sump Heater, 4-way valve)
-- Relays can switch AC or DC
+- 5 relays (Compressor, Hot CP or Air Fun, Cold CP or Air Fun, Compressor Heater, 4-way valve)
 - 4 inputs
 - 5/6 pin EEV connection,
 - 1602 display support
@@ -61,7 +59,7 @@ For more information about Heap Pumps look at [Wikipedia about HP](https://en.wi
  
 \* RS-485 specification. Hardware test succeeded on 400 meters line.
 
-Example: day/night setpoint control and data visualisation with "pythonic rs485" way.
+Example: day/night setpoint control and data visualisation with json communication way.
 ![graph example](./m_t_graph_example.png)
 <br><br>
 
@@ -73,8 +71,8 @@ Only 1 Relay: drives electric heater (any)
 * Compressor (can be used as external relay driver for High Power systems)
 * Cold Circulating Pump (CP)
 * Hot CP
-* Sump Heater (optional, recommended for outdoor HP installations)
-* 4-way Valve (support coming up: autumn 2019)
+* Compressor Heater (optional, recommended for outdoor HP installations)
+* and one reserved to support 4-way Valve
 <br><br>
 ## Temperature sensors:
 * Up to 13 temperature sensors can be connected to CHPC to control all processes that you want. 
