@@ -99,7 +99,7 @@ This abbrevations used in interface during sensors installation procedure
 | Tae | after evaporator | EEV <br>Anti-liquid protection at suction line |
 | Tbe | before evaporator | EEV |
 | Ttarget | target | Thermostat<br>Thermostat+EEV |
-| Tsump | sump | Automatic Sump Heater<br>Sump overheat protection |
+| Tsump | sump | Automatic Compressor Heater<br>Compressor  overheat protection |
 | Tci | cold in | Antifreeze protection |
 | Tco | cold out | Antifreeze protection |
 | Thi | hot in |  Hot CP automatic control   |
