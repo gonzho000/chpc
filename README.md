@@ -65,10 +65,10 @@ Example: day/night setpoint control and data visualization with JSON communicati
 
 ## Relays:
 ### "Thermostat":
-Only 1 Relay: drives electric heater (any) 
+Only one Relay: drive an electric heater (any) 
 ### "Heat Pump". Capillary tube, TXV, EEV:
 5 Relays, drives all you need:
-* Compressor (can be used as external relay driver for High Power systems)
+* Compressor (relay can be used as external relay driver for High Power systems)
 * Cold Circulating Pump (CP)
 * Hot CP
 * Compressor Heater (optional, recommended for outdoor HP installations)
@@ -83,7 +83,7 @@ Only 1 Relay: drives electric heater (any)
 ![medium scheme](./m_HeatPump_t_sensors_med.png)
 <br><br>
  ## Get your own CHPC:
-* download PCB gerber file, *CHPC_v1.x_PCB_Gerber.zip*
+* download PCB Gerber file, *CHPC_v1.x_PCB_Gerber.zip*
 * search google [where to order PCB](https://www.google.com/search?q=order+pcb) or make your own at CNC machine
 * order electronic components, see BOM (Bill Of Materials) list, *CHPC_v1.x_PCB_BOM.html*
 * solder, [assembly instructions here](https://github.com/gonzho000/chpc/wiki/assembly)
