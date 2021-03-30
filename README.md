@@ -20,27 +20,27 @@ Temperature sensors installed:
 - Outdoor temperature,
 - Compressor.
 
-Controled via both RS-485 and 16x2 display with buttons.
+Controlled via both RS-485 and 16x2 display with buttons.
 
 ## Changelog
-- 13 apr, 2019: EEV support development started
-- 16 apr, 2019: Standalone EEV (no thermostat) with only 2 T sensors written and debugged
-- 30 apr, 2019: HP system updated to CHPC
-- 01 may, 2019: CHPC fully tested and released
-- 02 may, 2019: PCB rev.1.3 coming up, main feature: lot of DS18B20 inputs
-- 17 may, 2019: <b>PCB 1.3 tested, [assembly instructions added](https://github.com/gonzho000/chpc/wiki/assembly)</b>
+- 13 Apr, 2019: EEV support development started
+- 16 Apr, 2019: Standalone EEV (no thermostat) with only 2 T sensors written and debugged
+- 30 Apr, 2019: HP system updated to CHPC
+- 01 May, 2019: CHPC fully tested and released
+- 02 May, 2019: PCB rev.1.3 coming up, main feature: a lot of DS18B20 inputs
+- 17 May, 2019: <b>PCB 1.3 tested, [assembly instructions added](https://github.com/gonzho000/chpc/wiki/assembly)</b>
 <br><br>
 ## Applications:
 | Usage. |	Brief description. | 	Application examples	| Available protections	|
 | ---------- | ------------------ | ------------------ | -------------------- |
-| 1. Thermostat.	|  Precision thermostat. Simple and cheap. Only 1 relay and 1 temperature sensor required.<br> | Room heat control. Chicken coop climate control. Distillation column. Else. | N/A	|
-| 2. Heat pump (HP) control. | Controller drives HP system components: compressor, Cold and Hot side Circulating Pumps (CP). Protects system from overload, overheat and freezing up. Drives EEV to optimize running conditions. | DIY heat pump system. Repair module for commercial system. Water heater, house heating systems and same. | Compressor: cold start or overheat. Discharge and suction lines protection. Short-term power loss. Anti-freeze. Power overload protection. |
-| 3. EEV controller. | Only drives EEV, no relays. Requires 2 T sensors. | Upgrade your system from capilary tube to EEV. | Protects from liquid at suction line by design. |
+| 1. Thermostat.	|  Precision thermostat. Simple and cheap. Only one relay and one temperature sensor required.<br> | Room heat control. A chicken coop climate control. Distillation column. Else. | N/A	|
+| 2. Heat pump (HP) control. | Controller drives HP system components: compressor, Cold and Hot side Circulating Pumps (CP). Protect system from an overload, overheat and freezing up. Drives EEV to optimize running conditions. | DIY heat pump system. Repair module for commercial system. Water heater, house heating systems and same applications. | Compressor: cold start or overheat. Discharge and suction lines protection. Short-term power loss. Anti-freeze. Power overload protection. |
+| 3. EEV controller. | Only drives EEV, no relays. Require two T sensors. | Upgrade your system from capillary tube to EEV. | Protects from liquid at suction line by design. |
 
 For more information about Heap Pumps look at [Wikipedia about HP](https://en.wikipedia.org/wiki/Heat_pump)
 <br><br>
 ## Features:
-- Up to 13 T sensors (see "T sensors abbreviations" for full list)
+- Up to 13 T sensors (see "T sensor abbreviations" for full list)
 - 5 relays (Compressor, Hot CP or Air Fun, Cold CP or Air Fun, Compressor Heater, 4-way valve)
 - 4 inputs
 - 5/6 pin EEV connection,
