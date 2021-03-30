@@ -51,15 +51,15 @@ For more information about Heap Pumps look at [Wikipedia about HP](https://en.wi
 - On board or off board power supply
 <br><br>
 ## Control interfaces:
- <b>None:</b> Target temperature uploaded to board with firmware and cannot be changed. System used as fixed thermostat. Target temperature can be changed later with firmware re-upload.<br>
- <b>0.96 OLED or 1602 LCD screen + buttons:</b> Simple, local screen controlled system. Remote control is not possible.<br>
- <b>Remote computer terminal over RS-485 line. </b> Target temperature and running conditions under remote control. User can get stats from all T sensors. Up to 1.2 kilometer line.\*<br>
- <b> Remote automated control/stats via RS-485.</b> Firmware was written with python scripting in mind (and real scripts at prototype 485 network).<br>
+ <b>None:</b> Target temperature uploaded to board with firmware and not changed anymore. System used as an fixed thermostat. You can change target temperature with firmware re-upload.<br>
+ <b>0.96 OLED or 1602 LCD screen + buttons:</b> Simple, local screen controlled system. <br>
+ <b>Remote computer terminal over RS-485 line. </b> Target temperature and running conditions under remote control. A user can get stats from all T sensors. Up to 1.2 kilometer line.\*<br>
+ <b> Remote automated control/stats via RS-485.</b> Firmware was written with python scripting in mind (and real scripts at the prototype 485 network).<br>
  <b> Both screen + buttons and RS-485.</b> Combination allowed.
  
-\* RS-485 specification. Hardware test succeeded on 400 meters line.
+\* RS-485 specification. The hardware test succeeded on 400 meters line.
 
-Example: day/night setpoint control and data visualisation with json communication way.
+Example: day/night setpoint control and data visualization with JSON communication way.
 ![graph example](./m_t_graph_example.png)
 <br><br>
 
