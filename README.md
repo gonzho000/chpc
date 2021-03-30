@@ -91,8 +91,8 @@ Only one Relay: drive an electric heater (any)
 * install CHPC at your system
 * enjoy
 <br><br>
-## T sensors abbreviations:
-This abbrevations used in interface during sensors installation procedure
+## T sensor abbreviations:
+These abbreviations used in the interface during sensors installation procedure
 
 | Abbr. | Full name | Required for |
 | ----- | -------------------- | -------------------- |
@@ -124,7 +124,7 @@ This abbrevations used in interface during sensors installation procedure
  ![proto3 without screen](./m_proto3_noscreen.jpg)
  
  This is prototype 2 (PCB v1.0).
- 1602 is the best choise.
+ 1602 is the best choice.
  
  ![proto2](./m_proto2.jpg)
  
