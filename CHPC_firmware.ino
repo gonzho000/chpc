@@ -21,14 +21,15 @@
 
 
 //-----------------------USER OPTIONS-----------------------
-#define BOARD_TYPE_G 				//Type "G"
+#define BOARD_TYPE_G 				//Type "G", PCB from github.com/gonzho000/chpc/
 //#define BOARD_TYPE_F				//Type "F"
+//#define BOARD_TYPE_G9 				//Type "G9" or "G-MAX", current testing
 
 //#define DISPLAY_096 		1		//1st tests, support WILL BE DROPPED OUT SOON! small OLEDs support
 #define DISPLAY_1602 		2 		//if only 1st character appears: patch 1602 library "inline size_t LiquidCrystal_I2C::write(uint8_t value)"  "return 1" instead of "return 0"
 //#define DISPLAY_NONE		-1
 
-#define INPUTS_AS_BUTTONS	1  		//pulldown resistors required!
+#define INPUTS_AS_BUTTONS	1  		//pulldown resistors required
 
 //#define RS485_PYTHON		1  	
 #define RS485_HUMAN   	2
@@ -43,15 +44,15 @@
 
 //-----------------------TEMPERATURES-----------------------
 #define T_SETPOINT_MAX 		45.0;  		//defines max temperature that ordinary user can set
-#define T_HOTCIRCLE_DELTA_MIN 	2.0;		//useful for "water heater vith intermediate heat exchanger" scheme, Target == sensor in water, hot side CP will be switched on if "target - hot_out > this option"
-#define T_SUMP_MIN 		9.0;		//will not start if T lower
-#define T_SUMP_MAX 		110.0;		//will stop if T higher
+#define T_HOTCIRCLE_DELTA_MIN 	2.0;		//useful for "water heater vith intermediate heat exchanger" scheme, Target == sensor in water, hot side CP will be switched on if "target - hot_out > T_HOTCIRCLE_DELTA_MIN"
+#define T_SUMP_MIN 		9.0;		//HP will not start if T lower
+#define T_SUMP_MAX 		110.0;		//HP will stop if T higher
 #define T_SUMP_HEAT_THRESHOLD 	16.0;		//sump heater will be powered on if T lower
 #define T_BEFORE_CONDENSER_MAX 	108.0;      	//discharge MAX, system stops if discharge higher
-#define T_AFTER_EVAPORATOR_MIN 	-7.0;		//suction MIN, stop if lower, anti-freeze and anti-liquid at suction protection
+#define T_AFTER_EVAPORATOR_MIN 	-7.0;		//suction MIN, HP stops if lower, anti-freeze and anti-liquid at suction protection
 #define T_COLD_MIN 		-8.0;		//cold loop anti-freeze: stop if inlet or outlet temperature lower
 #define T_HOTOUT_MAX 		50.0;		//hot loop: stop if outlet temperature higher than this
-#define T_WORKINGOK_SUMP_MIN 	30.0;        	//used in compressor alive checker: need to be not very high to normal start after deep freeze
+#define T_WORKINGOK_SUMP_MIN 	30.0;        	//compressor MIN temperature, HP stops if it lower after 5 minutes of pumping, need to be not very high to normal start after deep freeze
 
 //-----------------------TUNING OPTIONS -----------------------
 #define MAX_WATTS		1170.0		//user for power protection
@@ -74,17 +75,18 @@
 
 #define EEV_STOP_HOLD		500		//0.1..1sec for Sanhua
 #define EEV_CLOSE_ADD_PULSES	8		//read below, close algo
-#define EEV_OPEN_AFTER_CLOSE	47		//0 - close to zero position, than close on EEV_CLOSE_ADD_PULSES
+#define EEV_OPEN_AFTER_CLOSE	47		//0 - close to zero position, than close on EEV_CLOSE_ADD_PULSES (close insurance, read EEV manuals for this value)
 						//N - close to zero position, than close on EEV_CLOSE_ADD_PULSES, than open on EEV_OPEN_AFTER_CLOSE pulses
-#define EEV_MINWORKPOS		52		//position will be not less during normal work
-#define EEV_PRECISE_START	8.6		//T difference, threshold: make slower pulses if less
-#define EEV_EMERG_DIFF		2.5		//if dangerous condition: diff =< (target_diff - EEV_EMERG_DIFF) occured, ex: target diff 5.0, emerg. diff 2.0, if calculated nowtime diff <= 3.0 then EEV will be closed
+						//i.e. it is "waiting position" while HP not working
+#define EEV_MINWORKPOS		52		//position will be not less during normal work, set after compressor start
+#define EEV_PRECISE_START	8.6		//T difference, threshold: make slower pulses if (real_diff-target_diff) less than this value. Used for fine auto-tuning.
+#define EEV_EMERG_DIFF		2.5		//if dangerous condition:  real_diff =< (target_diff - EEV_EMERG_DIFF) occured then EEV will be closed to min. work position //Ex: EEV_EMERG_DIFF = 2.0, target diff 5.0, if real_diff =< (5.0 - 2.0) than EEV will be closed
 #define EEV_HYSTERESIS		0.6		//must be less than EEV_PRECISE_START, ex: target difference = 4.0, hysteresis = 0.1, when difference in range 4.0..4.1 no EEV pulses will be done; 
-#define EEV_CLOSEEVERY		86400000	//86400000: every 24 hours, done while HP is NOT working
-#define EEV_TARGET_TEMP_DIFF	4.0		//target difference between Before Evaporator and After Evaporator
-//#define EEV_DEBUG				//used to debug during fine tuning, "RS485_HUMAN" only
+#define EEV_CLOSEEVERY		86400000	//86400000: EEV will be closed (calibrated) every 24 hours, done while HP is NOT working
+#define EEV_TARGET_TEMP_DIFF	4.0		//target difference between Before Evaporator and After Evaporator, the head of whole algo
+//#define EEV_DEBUG				//debug, usefull during system fine tuning, "RS485_HUMAN" only
 
-#define MAGIC     		0x46   		//change if u want to reinit T sensors
+#define MAGIC     		0x55   		//change if u want to reinit T sensors
 //-----------------------USER OPTIONS END -----------------------
 
 //#define INPUTS_AS_INPUTS	2  		//
@@ -129,13 +131,26 @@ v1.4, 02 Jun 2019:
 - EEV more asyncy
 - T options to header
 
+v1.5, 01 Jul 2019:
+- prototyping 9
+
+v1.6, 30 Apr 2021:
+- sensors init issue fix
+
 //TODO:
-- wclose and fclose to EEV
-- liquid ref. protection: start cold circle and sump heater if tsump =< tco/tci+1
+- 0.0 to -127 fix: only 2 attempts than pass 0.0
+- poss. DoS: infinite read to nowhere, fix it, set finite counter (ex: 200)
+- Dev and Host ID to header
+- add speaker and err code for ""ERR: no Tae or Tbe for EEV!""
+- min_user_t/max_user_t to header
+- rs485_modbus
+- full relays halification
+? wclose and fclose to EEV
+- liquid ref. protection: start cold circle and sump heater if tsump =< tco/tci+1, add option to header
 - periodical start of hot side circle
 - valve_4way
-- emergency jumper support
 - inputs support
+- ? emergency jumper support
 - ? rewite re-init proc from MAGIC to emergency jumper removal at board start
 - ? EEV target to EEPROM
 - ? list T and other things on screen with buttons
@@ -252,7 +267,7 @@ wattage1
 
 */
 
-String fw_version = "1.4";
+String fw_version = "1.6";
 
 #ifdef DISPLAY_096
 	#define DISPLAY DISPLAY_096
@@ -350,6 +365,32 @@ String fw_version = "1.4";
 		#define BUT_LEFT  	A2
 	#endif
 	
+#endif
+#ifdef BOARD_TYPE_G9
+	String hw_version = "Type G9 v1.x";
+	#define RELAY_4WAY_VALVE       	8
+	#define RELAY_SUMP_HEATER 	7
+
+	#define LATCH_595 		10
+	#define CLK_595 		9
+	#define DATA_595 		11
+	#define OE_595 			A1
+	/*
+	595.0: relay 10(not used)
+	595.1: relay 8
+	595.2: relay 9
+	595.3: relay 5 		RELAY_HEATPUMP
+	595.4: relay 4 		RELAY_COLDSIDE_CIRCLE
+	595.5: relay 3 		RELAY_HOTSIDE_CIRCLE
+	595.6: relay 6
+	595.7: relay 7
+	*/
+	#ifdef EEV_SUPPORT
+		#define EEV_1		2
+		#define EEV_2		4
+		#define EEV_3		3
+		#define EEV_4		5
+	#endif
 #endif
 //---------------------------memory debug
 #ifdef __arm__
@@ -464,6 +505,12 @@ bool heatpump_state    		= 0;
 bool hotside_circle_state  	= 0;
 bool coldside_circle_state 	= 0;
 bool sump_heater_state    	= 0;
+bool valve4w_state    		= 0;
+
+bool relay6_state		= 0;
+bool relay7_state		= 0;
+bool relay8_state		= 0;
+bool relay9_state		= 0;
 
 const long poweron_pause     	= POWERON_PAUSE    ;    	//default 5 mins
 const long mincycle_poweroff 	= MINCYCLE_POWEROFF;    	//default 5 mins
@@ -615,7 +662,7 @@ char CheckAddrExists(void) {
 	return 0;	
 	
 	/*
-	//incorrect way: 
+	//incorrect way: 0.06 % chance for 13 sensors to false positive, calculated for true random.
 	for (i = 0; i < 8; i++) {	
 		if (	(dev_addr[i] != Tae.addr[i]) 	&&
 			(dev_addr[i] != Tbe.addr[i]) 	&&
@@ -891,7 +938,7 @@ unsigned char FindAddr(String what, int required = 0) {
 		}
 	}
 	while (1) {
-		//PrintAddr(dev_addr);
+		PrintAddr(dev_addr);
 		delay(1000);
 		if (s_allTsensors.getAddress(dev_addr, 0)) {
 			PrintS_and_D("OK! Remove " + what);
@@ -901,7 +948,7 @@ unsigned char FindAddr(String what, int required = 0) {
 			break;
 		}
 	}
-	return i;
+	return 1;
 }
 
 double GetT (unsigned char *str) {
@@ -1000,41 +1047,49 @@ void halifise(void){
 		digitalWrite(LATCH_595, 0);
 		//7
 		digitalWrite(CLK_595, 0);
+		__asm__ __volatile__ ("nop\n\t");
 		digitalWrite(DATA_595, 0);
 		digitalWrite(CLK_595, 1);
 		__asm__ __volatile__ ("nop\n\t");
 		//6
 		digitalWrite(CLK_595, 0);
+		__asm__ __volatile__ ("nop\n\t");
 		digitalWrite(DATA_595, 0);
 		digitalWrite(CLK_595, 1);
 		__asm__ __volatile__ ("nop\n\t");
 		//5
 		digitalWrite(CLK_595, 0);
+		__asm__ __volatile__ ("nop\n\t");
 		digitalWrite(DATA_595, 0);
 		digitalWrite(CLK_595, 1);
 		__asm__ __volatile__ ("nop\n\t");
 		//4
 		digitalWrite(CLK_595, 0);
+		__asm__ __volatile__ ("nop\n\t");
 		digitalWrite(DATA_595, 0);
 		digitalWrite(CLK_595, 1);
 		__asm__ __volatile__ ("nop\n\t");
 		//3
 		digitalWrite(CLK_595, 0);
+		__asm__ __volatile__ ("nop\n\t");
 		digitalWrite(DATA_595, 0);	
 		digitalWrite(CLK_595, 1);
 		__asm__ __volatile__ ("nop\n\t");
 		//2
 		digitalWrite(CLK_595, 0);
+		__asm__ __volatile__ ("nop\n\t");
 		digitalWrite(DATA_595, 0); //4way valve here
 		digitalWrite(CLK_595, 1);
 		__asm__ __volatile__ ("nop\n\t");
 		//1
 		digitalWrite(CLK_595, 0);
+		__asm__ __volatile__ ("nop\n\t");
 		digitalWrite(DATA_595, sump_heater_state);
 		digitalWrite(CLK_595, 1);
 		__asm__ __volatile__ ("nop\n\t");
 		//0
 		digitalWrite(CLK_595, 0);
+		__asm__ __volatile__ ("nop\n\t");
 		digitalWrite(DATA_595, hotside_circle_state);
 		digitalWrite(CLK_595, 1);
 		__asm__ __volatile__ ("nop\n\t");
@@ -1042,18 +1097,91 @@ void halifise(void){
 		//
 		digitalWrite(LATCH_595, 1);
 		
-		
+		digitalWrite	(RELAY_HEATPUMP, 	heatpump_state);
+		digitalWrite	(RELAY_COLDSIDE_CIRCLE,	coldside_circle_state);
 	#endif
 	#ifdef BOARD_TYPE_G
-		digitalWrite	(RELAY_SUMP_HEATER, sump_heater_state);
+		digitalWrite	(RELAY_SUMP_HEATER, 	sump_heater_state);
 		digitalWrite	(RELAY_HOTSIDE_CIRCLE,	hotside_circle_state);
+		digitalWrite	(RELAY_HEATPUMP, 	heatpump_state);
+		digitalWrite	(RELAY_COLDSIDE_CIRCLE,	coldside_circle_state);
+	#endif
+	#ifdef BOARD_TYPE_G9
+		//#define RELAY_4WAY_VALVE      8
+		//#define RELAY_SUMP_HEATER 	7
+		/*
+		595.0: relay 10(not used)
+		595.1: relay 8		//use for 1st test of DAC
+		595.2: relay 9		//use for 1st test of DAC
+		595.3: relay 5 		RELAY_HEATPUMP
+		595.4: relay 4 		RELAY_COLDSIDE_CIRCLE
+		595.5: relay 3 		RELAY_HOTSIDE_CIRCLE
+		595.6: relay 6
+		595.7: relay 7		
+		*/
+
+		digitalWrite(LATCH_595, 0);
+		//7
+		digitalWrite(CLK_595, 0);
+		digitalWrite(DATA_595, relay7_state);
+		digitalWrite(CLK_595, 1);
+		__asm__ __volatile__ ("nop\n\t");
+		//6
+		digitalWrite(CLK_595, 0);
+		__asm__ __volatile__ ("nop\n\t");
+		digitalWrite(DATA_595, relay6_state);
+		digitalWrite(CLK_595, 1);
+		__asm__ __volatile__ ("nop\n\t");
+		//5
+		digitalWrite(CLK_595, 0);
+		__asm__ __volatile__ ("nop\n\t");
+		digitalWrite(DATA_595, hotside_circle_state);
+		digitalWrite(CLK_595, 1);
+		__asm__ __volatile__ ("nop\n\t");
+		//4
+		digitalWrite(CLK_595, 0);
+		__asm__ __volatile__ ("nop\n\t");
+		digitalWrite(DATA_595, coldside_circle_state);
+		digitalWrite(CLK_595, 1);
+		__asm__ __volatile__ ("nop\n\t");
+		//3
+		digitalWrite(CLK_595, 0);
+		__asm__ __volatile__ ("nop\n\t");
+		digitalWrite(DATA_595, heatpump_state);	
+		digitalWrite(CLK_595, 1);
+		__asm__ __volatile__ ("nop\n\t");
+		//2
+		digitalWrite(CLK_595, 0);
+		__asm__ __volatile__ ("nop\n\t");
+		digitalWrite(DATA_595, relay9_state); 
+		digitalWrite(CLK_595, 1);
+		__asm__ __volatile__ ("nop\n\t");
+		//1
+		digitalWrite(CLK_595, 0);
+		__asm__ __volatile__ ("nop\n\t");
+		digitalWrite(DATA_595, relay8_state);
+		digitalWrite(CLK_595, 1);
+		__asm__ __volatile__ ("nop\n\t");
+		//0
+		digitalWrite(CLK_595, 0);
+		__asm__ __volatile__ ("nop\n\t");
+		digitalWrite(DATA_595, 0);
+		digitalWrite(CLK_595, 1);
+		__asm__ __volatile__ ("nop\n\t");
+		digitalWrite(CLK_595, 0);
+		//
+		digitalWrite(LATCH_595, 1);
+		__asm__ __volatile__ ("nop\n\t");
+		digitalWrite(LATCH_595, 0);
+		digitalWrite	(RELAY_SUMP_HEATER,	sump_heater_state);
+		digitalWrite	(RELAY_4WAY_VALVE, 	valve4w_state);
 	#endif
 }
 
 void eevise(void) {
-	if (  	((( EEV_apulses < 0 ) && (EEV_fast == 1))						&&	 ((unsigned long)(millis_now - millis_eev_last_step) > (EEV_PULSE_FCLOSE_MILLIS))  	)	||
+	if (  		((( EEV_apulses < 0 ) && (EEV_fast == 1))						&&	 ((unsigned long)(millis_now - millis_eev_last_step) > (EEV_PULSE_FCLOSE_MILLIS))  	)	||
 			((( EEV_apulses < 0 ) && (EEV_fast == 0))						&&	 ((unsigned long)(millis_now - millis_eev_last_step) > (EEV_PULSE_CLOSE_MILLIS)	) 	)	||
-			((( EEV_apulses > 0 ) && 			(EEV_cur_pos < EEV_MINWORKPOS  	))	&&	 ((unsigned long)(millis_now - millis_eev_last_step) > (EEV_PULSE_WOPEN_MILLIS)	) 	)	||
+			((( EEV_apulses > 0 ) && 			(EEV_cur_pos <  EEV_MINWORKPOS  ))	&&	 ((unsigned long)(millis_now - millis_eev_last_step) > (EEV_PULSE_WOPEN_MILLIS)	) 	)	||
 			((( EEV_apulses > 0 ) && (EEV_fast == 1) &&  	(EEV_cur_pos >= EEV_MINWORKPOS	)) 	&&	 ((unsigned long)(millis_now - millis_eev_last_step) > (EEV_PULSE_FOPEN_MILLIS) )	)	||	
 			((( EEV_apulses > 0 ) && (EEV_fast == 0) &&  	(EEV_cur_pos >= EEV_MINWORKPOS	)) 	&&	 ((unsigned long)(millis_now - millis_eev_last_step) > (EEV_PULSE_OPEN_MILLIS)  )	)	||
 			(millis_eev_last_step == 0)
@@ -1100,31 +1228,53 @@ void eevise(void) {
 //--------------------------- functions END
 
 void setup(void) {
-	pinMode		(RELAY_HEATPUMP, 	OUTPUT);
-	pinMode		(RELAY_COLDSIDE_CIRCLE, OUTPUT);
-	digitalWrite	(RELAY_HEATPUMP,	LOW);
-	digitalWrite	(RELAY_COLDSIDE_CIRCLE,	LOW);
 	
 	#ifdef BOARD_TYPE_G
+		pinMode		(RELAY_HEATPUMP, 	OUTPUT);
+		pinMode		(RELAY_COLDSIDE_CIRCLE, OUTPUT);
+		digitalWrite	(RELAY_HEATPUMP,	LOW);
+		digitalWrite	(RELAY_COLDSIDE_CIRCLE,	LOW);
+		//
 		pinMode		(RELAY_SUMP_HEATER, 	OUTPUT);
 		pinMode		(RELAY_HOTSIDE_CIRCLE, 	OUTPUT);
 		digitalWrite	(RELAY_SUMP_HEATER,	LOW);
 		digitalWrite	(RELAY_HOTSIDE_CIRCLE,	LOW);
+		halifise();
 	#endif
 	#ifdef BOARD_TYPE_F
+		pinMode		(RELAY_HEATPUMP, 	OUTPUT);
+		pinMode		(RELAY_COLDSIDE_CIRCLE, OUTPUT);
+		digitalWrite	(RELAY_HEATPUMP,	LOW);
+		digitalWrite	(RELAY_COLDSIDE_CIRCLE,	LOW);
+		//
 		pinMode		(LATCH_595, 	OUTPUT);
 		pinMode		(CLK_595, 	OUTPUT);
 		pinMode		(DATA_595, 	OUTPUT);
 		digitalWrite	(LATCH_595, 	LOW);
 		digitalWrite	(CLK_595, 	LOW);
 		digitalWrite	(DATA_595, 	LOW);
+		halifise();
+	#endif
+	#ifdef BOARD_TYPE_G9
+		pinMode		(LATCH_595, 		OUTPUT);
+		pinMode		(CLK_595, 		OUTPUT);
+		pinMode		(DATA_595, 		OUTPUT);
+		pinMode		(RELAY_SUMP_HEATER,	OUTPUT);
+		pinMode		(RELAY_4WAY_VALVE, 	OUTPUT);
+		pinMode		(OE_595, 		OUTPUT);
+		digitalWrite	(LATCH_595, 		LOW);
+		digitalWrite	(CLK_595, 		LOW);
+		digitalWrite	(DATA_595, 		LOW);
+		digitalWrite	(RELAY_SUMP_HEATER,	LOW);
+		digitalWrite	(RELAY_4WAY_VALVE, 	LOW);
+		halifise();
+		digitalWrite	(OE_595, 		LOW);
 	#endif
 	
 	#ifdef WATCHDOG
 		wdt_disable();
 		delay(2000);
 	#endif
-	
 	InitS_and_D();
 	pinMode(SerialTxControl, OUTPUT);    
 	digitalWrite(SerialTxControl, RS485Receive);
@@ -1151,6 +1301,84 @@ void setup(void) {
 	
 	s_allTsensors.begin();
 	s_allTsensors.setWaitForConversion(false);  //ASYNC mode, request before get, see Dallas library for details
+	
+	
+	//----------------------------- self-tests !!!----------------------------- ----------------------------- ----------------------------- 
+	/*
+	digitalWrite(RELAY_HEATPUMP,HIGH);
+	delay(300);
+	digitalWrite(RELAY_HOTSIDE_CIRCLE,HIGH);
+	delay(300);
+	digitalWrite(RELAY_COLDSIDE_CIRCLE,HIGH);
+	delay(300);
+	digitalWrite(RELAY_SUMP_HEATER,HIGH);
+	delay(2000);
+	digitalWrite(RELAY_HEATPUMP,LOW);
+	delay(300);
+	digitalWrite(RELAY_HOTSIDE_CIRCLE,LOW);
+	delay(300);
+	digitalWrite(RELAY_COLDSIDE_CIRCLE,LOW);
+	delay(300);
+	digitalWrite(RELAY_SUMP_HEATER,LOW);
+	*/
+	/*
+	tone(speakerOut, 2250);
+	delay (500); // like ups power on
+	noTone(speakerOut);
+
+	
+	
+	while ( 1 == 1) {
+		
+		heatpump_state    	= 1;	halifise();	delay(1000);
+		coldside_circle_state 	= 1;	halifise();	delay(1000);
+		hotside_circle_state  	= 1;	halifise();	delay(1000);
+		sump_heater_state    	= 1;	halifise();	delay(1000);
+		valve4w_state    	= 1;	halifise();	delay(1000);
+		#ifdef BOARD_TYPE_G9
+			relay6_state		= 1;	halifise();	delay(1000);
+			relay7_state		= 1;	halifise();	delay(1000);
+			relay8_state		= 1;	halifise();	delay(1000);
+			relay9_state		= 1;	halifise();	delay(1000);
+		#endif
+		break;
+		
+		delay(3000);
+		heatpump_state    	= 0;	halifise();	delay(1000);
+		coldside_circle_state 	= 0;	halifise();	delay(1000);
+		hotside_circle_state  	= 0;	halifise();	delay(1000);
+		sump_heater_state    	= 0;	halifise();	delay(1000);
+		valve4w_state    	= 0;	halifise();	delay(1000);
+		#ifdef BOARD_TYPE_G9
+			relay6_state		= 0;	halifise();	delay(1000);
+			relay7_state		= 0;	halifise();	delay(1000);
+			relay8_state		= 0;	halifise();	delay(1000);
+			relay9_state		= 0;	halifise();	delay(1000);
+		#endif
+		delay(3000);
+		
+	}
+	//EEV self-test
+	while ( 1 == 1 ) {
+		EEV_apulses =  -(EEV_MAXPULSES + EEV_CLOSE_ADD_PULSES);
+		EEV_adonotcare = 1;
+		EEV_fast = 1;
+		while (EEV_apulses < 0){
+			millis_now = millis();
+			eevise();
+		}
+		//delay(1000);
+		EEV_apulses =  EEV_MAXPULSES;
+		EEV_fast = 1;
+		while (EEV_apulses > 0){
+			millis_now = millis();
+			eevise();
+		}
+		//delay(1000);
+	}	
+	*/
+	//----------------------------- self-test END----------------------------- ----------------------------- ----------------------------- 
+	
 	
 	eeprom_magic_read = EEPROM.read(eeprom_addr);
 	#ifdef INPUTS_AS_BUTTONS
@@ -1353,12 +1581,17 @@ void setup(void) {
 	
 	Get_Temperatures();
 	
+	outString.reserve(200);
+	//PrintS_and_D(String(freeMemory()));  //!!! debug
+	//!!!
+	//analogWrite(speakerOut, 10);
+	//delay (1500); 
+	//analogWrite(speakerOut, 0);
+	//delay (1500); 
+	//!!!
 	tone(speakerOut, 2250);
 	delay (1500); // like ups power on
 	noTone(speakerOut);
-		
-	outString.reserve(200);
-	//PrintS_and_D(String(freeMemory()));  //!!! debug
 }
 
  
@@ -1366,28 +1599,6 @@ void loop(void) {
 	digitalWrite(SerialTxControl, RS485Receive);
 	millis_now = millis();
 
-	//----------------------------- self-test !!!
-	/*
-	digitalWrite(RELAY_HEATPUMP,HIGH);
-	delay(300);
-	digitalWrite(RELAY_HOTSIDE_CIRCLE,HIGH);
-	delay(300);
-	digitalWrite(RELAY_COLDSIDE_CIRCLE,HIGH);
-	delay(300);
-	digitalWrite(RELAY_SUMP_HEATER,HIGH);
-	delay(2000);
-	digitalWrite(RELAY_HEATPUMP,LOW);
-	delay(300);
-	digitalWrite(RELAY_HOTSIDE_CIRCLE,LOW);
-	delay(300);
-	digitalWrite(RELAY_COLDSIDE_CIRCLE,LOW);
-	delay(300);
-	digitalWrite(RELAY_SUMP_HEATER,LOW);
-	*/
-
-	// step one revolution  in one direction:
-	//!!! write self-test for EEV
-	//----------------------------- self-test END
 	#ifdef RS485_HUMAN
 		if (((unsigned long)(millis_now - millis_last_printstats) > HUMAN_AUTOINFO)   ||   (millis_last_printstats == 0)  ) {
 			PrintStats_Serial();
@@ -1444,7 +1655,8 @@ void loop(void) {
 			#endif
 			millis_last_heatpump_on = millis_now;
 			heatpump_state = 0;
-			digitalWrite(RELAY_HEATPUMP, heatpump_state);
+			halifise();
+			//digitalWrite(RELAY_HEATPUMP, heatpump_state);	//old, now halifised
 		}
 	}
 	
@@ -1485,7 +1697,7 @@ void loop(void) {
 	//-------------------display
 	#if (DISPLAY == 2) || (DISPLAY == 1)
 		if(  ((unsigned long)(millis_now - millis_displ_update) > millis_displ_update_interval )  ||  (millis_displ_update == 0) ) {
-			//EEV_ONLY SUPPORT!!!!!!!
+			//!!!EEV_ONLY SUPPORT???
 			#ifndef EEV_ONLY
 				outString = "A:" + String(T_setpoint, 1) + " Real:";
 				if (Ttarget.e == 1) {
@@ -1922,7 +2134,7 @@ void loop(void) {
 						#endif
 						millis_last_heatpump_on = millis_now;
 						heatpump_state = 0;
-						digitalWrite(RELAY_HEATPUMP, heatpump_state);
+						//digitalWrite(RELAY_HEATPUMP, heatpump_state);  // old, now halifised
 			}
 			
 			//alive_check_cycle_after_5_mins:
@@ -1951,14 +2163,14 @@ void loop(void) {
 					millis_last_heatpump_on = millis_now;
 					heatpump_state = 0;
 				}
-				digitalWrite(RELAY_HEATPUMP, heatpump_state);
+				//digitalWrite(RELAY_HEATPUMP, heatpump_state);	// old, now halifised
 			}
 				
 			//disable pump by error
 			if ( errorcode != ERR_OK ) {
 				millis_last_heatpump_on = millis_now;
 				heatpump_state = 0;
-				digitalWrite(RELAY_HEATPUMP, heatpump_state);
+				//digitalWrite(RELAY_HEATPUMP, heatpump_state);	// old, now halifised
 				#ifdef RS485_HUMAN 
 					PrintS("Error stop: " + String(errorcode, HEX));
 				#endif
@@ -1967,9 +2179,9 @@ void loop(void) {
 			//!!! self-test
 			///heatpump_state = 1;
 			
-			//write states to relays
-			digitalWrite	(RELAY_HEATPUMP, 	heatpump_state);
-			digitalWrite	(RELAY_COLDSIDE_CIRCLE,	coldside_circle_state);
+			//!!! write states to relays, old, now halifised
+			//digitalWrite	(RELAY_HEATPUMP, 	heatpump_state);
+			//digitalWrite	(RELAY_COLDSIDE_CIRCLE,	coldside_circle_state);
 			halifise();
 		#endif
 	}
@@ -2063,7 +2275,8 @@ void loop(void) {
 			RS485Serial.println("-");
 			RS485Serial.println(inData);
 			RS485Serial.println("-");
-			}*/
+			}
+			*/
 			//or this debug
 			/*
 			digitalWrite(SerialTxControl, RS485Transmit);
@@ -2120,7 +2333,14 @@ void loop(void) {
 					outString += ",\"W1\":" + String(async_wattage);
 					#ifndef EEV_ONLY
 						outString += ",\"A1\":" + String(T_setpoint);  //(A)im (target)
-						outString += ",\"RP\":" + String(heatpump_state*RELAY_HEATPUMP);  
+						//!!!!! must be changed for G9 v1.4 - personal pin !!!!!!!
+						#ifndef BOARD_TYPE_G9
+							outString += ",\"RP\":" + String(heatpump_state*RELAY_HEATPUMP);  
+						#endif
+						#ifdef BOARD_TYPE_G9
+							outString += ",\"RP\":" + String(heatpump_state*20);  
+						#endif
+						//!!!!! 
 					#endif
 					if (Tci.e == 1) {
 						outString += ",\"TCI\":" + String(Tci.T);
